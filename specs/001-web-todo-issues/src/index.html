@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Todo List</title>
+  <link rel="stylesheet" href="styles/main.css" />
+</head>
+<body>
+  <h1>Todo List</h1>
+
+  <!-- Add Issue Form -->
+  <form id="add-issue">
+    <input type="text" id="title" placeholder="Issue title" required />
+    <textarea id="description" placeholder="Optional description"></textarea>
+    <button type="submit">Add</button>
+  </form>
+
+  <!-- Issue List -->
+  <ul id="issue-list"></ul>
+
+  <!-- History Button -->
+  <button id="history-btn">History</button>
+
+  <!-- History Modal -->
+  <div id="history-modal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close" id="history-close">&times;</span>
+      <h2>Issue History</h2>
+      <ul id="history-list"></ul>
+    </div>
+  </div>
+
+  <script src="scripts/app.js"></script>
+</body>
+</html>
