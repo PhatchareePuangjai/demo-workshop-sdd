@@ -1,19 +1,26 @@
 <!--
 SYNC IMPACT REPORT
 ==================
+- Version Change: 1.0.0 -> 1.1.0
+- List of Modified Principles:
+  - ADDED: VII. Root-Level Entry Point (`index.html` MUST live at the repository root, outermost level)
+  - Unchanged: I. Simplicity First, II. Storage Constraint, III. No Authentication,
+    IV. Time-boxed Scope, V. Traceability, VI. Shared Interface
+- Added Sections:
+  - "Project Structure" subsection under Technical Stack & Constraints (flat, root-level file layout)
+- Removed Sections: None
+- Follow-up TODOs: None
+
+Previous entry (1.0.0):
 - Version Change: N/A -> 1.0.0
-- List of Modified Principles: Initial creation of the SDD Workshop Constitution with 6 core principles:
+- Initial creation of the SDD Workshop Constitution with 6 core principles:
   1. Simplicity First (Vanilla HTML/CSS/JS only)
   2. Storage Constraint (LocalStorage only)
   3. No Authentication (No login/session)
   4. Time-boxed Scope (Max 45 mins per feature, trim scope if needed)
   5. Traceability (Every code change must trace to an Acceptance Criterion)
   6. Shared Interface (Pre-agreed HTML IDs, classes, and function names)
-- Added Sections:
-  - Technical Stack & Constraints
-  - Spec-Driven Development Workflow
-- Removed Sections: None
-- Follow-up TODOs: None
+- Added Sections: Technical Stack & Constraints, Spec-Driven Development Workflow
 -->
 
 # Specification-Driven Development Workshop Constitution
@@ -38,12 +45,30 @@ Every line of code written MUST be traceable back to a specific Acceptance Crite
 ### VI. Shared Interface
 If a project contains multiple features that operate on the same underlying data structure (e.g., a shared list of items), all features MUST use the same predefined function names, data structures, and HTML element IDs/classes as agreed upon by the team in advance. Developers MUST NOT duplicate shared functions, rename key variables, or introduce conflicting element identifiers.
 
+### VII. Root-Level Entry Point
+All generated code MUST follow a flat, root-level file layout. The application's entry point `index.html` MUST live at the outermost level of the repository (the repository root), never inside a subfolder such as `src/`, `app/`, `public/`, or a feature-named directory. Supporting assets (e.g. `style.css`, `app.js`) MUST sit next to `index.html` at the root and be referenced with plain relative paths (`./style.css`, `./app.js`) — no absolute paths, no path aliases, no nested asset trees. This guarantees the app opens by double-clicking the root `index.html` (`file://`) and deploys to static hosting (e.g. Vercel) with zero build or output-directory configuration. Any spec, plan, or task that places `index.html` anywhere but the root MUST be rejected and corrected before implementation.
+
 ## Technical Stack & Constraints
 
 Development is entirely local. The allowed tech stack is restricted to:
 - **Languages**: Standard HTML5, CSS3, and standard ECMAScript 2020+ (modern standard JavaScript).
 - **External Assets**: Standard browser APIs only. No third-party NPM packages, bundlers, or CSS preprocessors (SASS/LESS) are allowed.
 - **Hosting / Execution Compatibility**: The codebase MUST be fully compatible with direct file system execution (opening the `index.html` file using the `file://` protocol) or simple local HTTP hosting (e.g., running `python3 -m http.server` in the root).
+
+### Project Structure
+
+The generated application MUST match this layout exactly:
+
+```
+<repo root>/
+├── index.html      # REQUIRED entry point — outermost level, never nested
+├── style.css       # optional, root level, sibling of index.html
+└── app.js          # optional, root level, sibling of index.html
+```
+
+- `index.html` at the repository root is mandatory and is the single entry point.
+- Additional HTML pages, if a spec requires them, MUST also sit at the root as siblings of `index.html`.
+- Only non-code material (specs, docs, tooling) may live in subdirectories; application files MUST NOT.
 
 ## Spec-Driven Development Workflow
 
@@ -64,4 +89,4 @@ All development MUST adhere to the following workflow stages:
 - **Compliance Reviews**: At each stage of the development lifecycle (specifying, planning, implementing), the Spec Kit workflow tools MUST verify compliance with these rules. Any non-compliant artifact or code change must be rejected.
 - **Guidance File**: Use `.specify/memory/constitution.md` as the source of truth for runtime development governance guidance.
 
-**Version**: 1.0.0 | **Ratified**: 2026-09-11 | **Last Amended**: 2026-09-11
+**Version**: 1.1.0 | **Ratified**: 2026-09-11 | **Last Amended**: 2026-09-11
