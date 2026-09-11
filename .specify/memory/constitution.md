@@ -1,50 +1,67 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+SYNC IMPACT REPORT
+==================
+- Version Change: N/A -> 1.0.0
+- List of Modified Principles: Initial creation of the SDD Workshop Constitution with 6 core principles:
+  1. Simplicity First (Vanilla HTML/CSS/JS only)
+  2. Storage Constraint (LocalStorage only)
+  3. No Authentication (No login/session)
+  4. Time-boxed Scope (Max 45 mins per feature, trim scope if needed)
+  5. Traceability (Every code change must trace to an Acceptance Criterion)
+  6. Shared Interface (Pre-agreed HTML IDs, classes, and function names)
+- Added Sections:
+  - Technical Stack & Constraints
+  - Spec-Driven Development Workflow
+- Removed Sections: None
+- Follow-up TODOs: None
+-->
+
+# Specification-Driven Development Workshop Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Simplicity First
+Developers MUST use only vanilla HTML5, CSS3, and modern standard JavaScript (ES6+). Developers MUST NOT use any frontend frameworks (e.g., React, Vue, Angular, Svelte), build steps, bundlers, compilers, or transpilers (e.g., Webpack, Vite, Parcel, Babel, TypeScript). All application code MUST run immediately by opening the index `.html` file directly in a web browser or deploying it as a static site.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. Storage Constraint
+All persistent application data MUST be stored using the browser's `localStorage` API only. Developers MUST NOT use actual database servers, backend APIs, or external storage services of any kind. No remote network calls (using `fetch`, `XMLHttpRequest`, or external SDKs) are permitted for data persistence.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. No Authentication
+The application MUST NOT include any login, registration, authentication, token validation, session management, or user-access control systems. The application MUST treat all users as a single, fully authorized local operator.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. Time-boxed Scope
+Every feature described in a specification MUST be implementable within a strict 45-minute limit. If a specification is too complex to be fully built within this timeframe, the specification MUST be trimmed or split until it fits. No features beyond what is explicitly defined in each specification may be implemented, regardless of the project topic.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### V. Traceability
+Every line of code written MUST be traceable back to a specific Acceptance Criterion (AC) defined in the active specification. Developers MUST NOT write code, features, or behaviors that are not directly mapped to a documented requirement.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+### VI. Shared Interface
+If a project contains multiple features that operate on the same underlying data structure (e.g., a shared list of items), all features MUST use the same predefined function names, data structures, and HTML element IDs/classes as agreed upon by the team in advance. Developers MUST NOT duplicate shared functions, rename key variables, or introduce conflicting element identifiers.
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+## Technical Stack & Constraints
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+Development is entirely local. The allowed tech stack is restricted to:
+- **Languages**: Standard HTML5, CSS3, and standard ECMAScript 2020+ (modern standard JavaScript).
+- **External Assets**: Standard browser APIs only. No third-party NPM packages, bundlers, or CSS preprocessors (SASS/LESS) are allowed.
+- **Hosting / Execution Compatibility**: The codebase MUST be fully compatible with direct file system execution (opening the `index.html` file using the `file://` protocol) or simple local HTTP hosting (e.g., running `python3 -m http.server` in the root).
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+## Spec-Driven Development Workflow
+
+All development MUST adhere to the following workflow stages:
+1. **Strict Conflict Resolution**: If any specification, implementation plan, or task list conflicts with the principles defined in this constitution, the developer or assistant MUST flag or reject it immediately. No development is permitted to proceed until the spec or plan is aligned.
+2. **Specification First**: A detailed feature spec must be drafted, clarified, and approved before any coding tasks are generated.
+3. **Acceptance Criteria Mapping**: All generated implementation tasks MUST map to specific acceptance criteria.
+4. **Task-by-Task Implementation**: Code changes MUST be done incrementally, verified at each step, and tested locally by opening the application in the browser.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+- **Supremacy**: This constitution is the supreme authority of the project. All specifications, architecture plans, code implementations, and manual/automated checks MUST comply with this document.
+- **Amendment Procedure**: Amendments to these principles may be proposed by any team member. To amend the constitution, the proposing party must document the rationale, update the version in accordance with the versioning policy, and obtain consent from the team and workshop facilitator.
+- **Versioning Policy**:
+  - **MAJOR**: Changes that modify or remove core principles (e.g., permitting a framework or backend server).
+  - **MINOR**: Adding a new principle or significantly expanding/clarifying guidance.
+  - **PATCH**: Fixing typos, clarifications, or non-semantic formatting.
+- **Compliance Reviews**: At each stage of the development lifecycle (specifying, planning, implementing), the Spec Kit workflow tools MUST verify compliance with these rules. Any non-compliant artifact or code change must be rejected.
+- **Guidance File**: Use `.specify/memory/constitution.md` as the source of truth for runtime development governance guidance.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0.0 | **Ratified**: 2026-09-11 | **Last Amended**: 2026-09-11
