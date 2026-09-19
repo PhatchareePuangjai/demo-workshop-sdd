@@ -3,6 +3,7 @@
 Workshop: Spec-Driven Development (SDD) — แต่ละกลุ่มทำงานบน branch ของตัวเอง แล้วได้ URL preview อัตโนมัติจาก Vercel
 
 - Repo: https://github.com/PhatchareePuangjai/demo-workshop-sdd
+- **ตั้งค่า Claude Code (ทำก่อนเริ่ม)**: [`SETUP-OPENROUTER.md`](SETUP-OPENROUTER.md)
 - **โจทย์ของกลุ่ม**: [`specs/โจทย์/team-<เลขกลุ่ม>.md`](specs/โจทย์/)
 - **กติกาโปรเจกต์ (ต้องอ่าน)**: [`.specify/memory/constitution.md`](.specify/memory/constitution.md)
 
@@ -148,6 +149,8 @@ URL จะอัปเดตตาม commit ล่าสุดของ branch 
 ---
 
 ## ใช้ Spec Kit ช่วยทำงาน
+
+> ⚠️ ก่อนใช้คำสั่งด้านล่าง ต้องตั้งค่า Claude Code ให้ต่อ OpenRouter ก่อน (ทำครั้งเดียว) ตาม [`SETUP-OPENROUTER.md`](SETUP-OPENROUTER.md) ไม่งั้นสั่งคำสั่งพวกนี้แล้วจะ error
 
 repo นี้ติดตั้ง [Spec Kit](https://github.com/github/spec-kit) ไว้แล้ว ใช้สั่งงาน AI assistant ให้ทำตามขั้นตอน SDD ได้ ลำดับหลักคือ:
 
