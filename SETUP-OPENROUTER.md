@@ -1,26 +1,11 @@
 # ตั้งค่า Claude Code ให้ใช้ OpenRouter
 
-คู่มือนี้ทำให้ทุกเครื่องในห้อง workshop ใช้ Claude Code ผ่าน OpenRouter ได้เหมือนกันหมด
+คู่มือนี้ทำให้ทุกเครื่องในห้อง workshop ใช้ Claude Code ผ่าน OpenRouter
 โดย**ใส่ key ไว้ในไฟล์ของโปรเจกต์** (`.claude/settings.local.json`) ไม่ต้องไปแก้ตัวแปรระบบของแต่ละเครื่อง
 
-**ใช้ได้ทั้ง Windows, macOS และ Linux** — จุดที่คำสั่งต่างกันจะมีป้ายบอกไว้ทุกจุด
+**ใช้ได้ทั้ง Windows, macOS และ Linux**
 
 > อ้างอิง: [OpenRouter — Claude Code Integration](https://openrouter.ai/docs/cookbook/coding-agents/claude-code-integration) · [Claude Code — Advanced setup](https://code.claude.com/docs/en/setup)
-
----
-
-## 🔴 อ่านก่อน: ห้าม commit key เด็ดขาด
-
-`.claude/settings.local.json` จะมี **API key จริง** อยู่ข้างใน และ repo นี้เป็น **public repo**
-ถ้าเผลอ `git add .` แล้ว push ขึ้นไป = key หลุดสู่สาธารณะ ใครก็ได้เอาไปใช้จนเครดิตหมด
-
-repo นี้ใส่ `.claude/settings.local.json` ไว้ใน `.gitignore` ให้แล้ว ลองตรวจดูว่ากันติดจริง (ใช้ได้ทุก OS):
-
-```bash
-git check-ignore -v .claude/settings.local.json
-```
-
-ต้องขึ้นบรรทัดที่มีคำว่า `.gitignore:... .claude/settings.local.json` ถ้า**ไม่ขึ้นอะไรเลย** ให้บอกผู้สอนก่อน อย่าเพิ่งใส่ key
 
 ---
 
@@ -49,13 +34,6 @@ curl -fsSL https://claude.ai/install.cmd -o install.cmd && install.cmd && del in
 > ถ้าขึ้น `'irm' is not recognized...` แปลว่าอยู่ใน CMD แต่ใช้คำสั่งของ PowerShell
 
 **ไม่ต้องเปิดเป็น Administrator**
-
-#### ⚠️ Windows ควรลง Git for Windows ด้วย
-
-ดาวน์โหลดที่ https://git-scm.com/downloads/win
-
-- workshop นี้ต้องใช้ `git` อยู่แล้ว
-- และทำให้ Claude Code ใช้ **Bash tool** ได้ ถ้าไม่ลง Claude Code จะสั่งงานผ่าน PowerShell แทน ซึ่งคำสั่งในคู่มือ/README บางอันจะใช้ไม่ได้
 
 ### 🍎 macOS / 🐧 Linux / WSL
 
@@ -87,11 +65,14 @@ claude --version
 
 ---
 
-## ขั้นตอนที่ 2 — เอา API key จาก OpenRouter
+## ขั้นตอนที่ 2 — รับ API key
 
-1. สมัคร / ล็อกอินที่ https://openrouter.ai
-2. ไปที่ https://openrouter.ai/keys แล้วกด **Create Key**
-3. คัดลอกค่าที่ขึ้นต้นด้วย `sk-or-v1-...` เก็บไว้ (หน้าเว็บจะโชว์ให้ครั้งเดียว)
+วันงาน workshop จะมี key (ขึ้นต้นด้วย `sk-or-v1-...`) แจกให้ ไม่ต้องสมัครหรือสร้างเอง รับมาแล้วเก็บไว้ ไปใช้ในขั้นตอนที่ 3 ได้เลย
+
+> **Note: ถ้าอยากสร้าง key เอง**
+> 1. สมัคร / ล็อกอินที่ https://openrouter.ai
+> 2. ไปที่ https://openrouter.ai/keys แล้วกด **Create Key**
+> 3. คัดลอกค่าที่ขึ้นต้นด้วย `sk-or-v1-...` เก็บไว้ (หน้าเว็บจะโชว์ให้ครั้งเดียว)
 
 ---
 
@@ -177,7 +158,7 @@ Claude Code ใช้ไฟล์นี้เก็บ permission ที่เ�
 }
 ```
 
-อย่าเขียนทับทิ้ง ให้**เพิ่ม `"env"` เข้าไปเป็น key พี่น้องกัน**:
+อย่าเขียนทับทิ้ง ให้**เพิ่ม `"env"` เข้าไปเป็น key เข้าไป**:
 
 ```json
 {
@@ -256,55 +237,6 @@ claude doctor
 
 ---
 
-## (ไม่บังคับ) เลือกโมเดลเอง
-
-เพิ่มใน `"env"` ได้ ถ้าอยากกำหนดว่าแต่ละระดับให้ใช้โมเดลไหน:
-
-```json
-{
-  "env": {
-    "ANTHROPIC_BASE_URL": "https://openrouter.ai/api",
-    "ANTHROPIC_AUTH_TOKEN": "sk-or-v1-เปลี่ยนเป็น-key-ของคุณ",
-    "ANTHROPIC_API_KEY": "",
-    "CLAUDE_CODE_ENABLE_GATEWAY_MODEL_DISCOVERY": "1",
-
-    "ANTHROPIC_DEFAULT_OPUS_MODEL": "~anthropic/claude-opus-latest[1m]",
-    "ANTHROPIC_DEFAULT_SONNET_MODEL": "~anthropic/claude-sonnet-latest[1m]",
-    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "~anthropic/claude-haiku-latest",
-    "CLAUDE_CODE_SUBAGENT_MODEL": "~anthropic/claude-opus-latest[1m]"
-  }
-}
-```
-
-- ต่อท้าย `[1m]` สำหรับโมเดลที่รองรับ context 1M เพื่อไม่ให้ session โดนบีบ (compact) เร็วเกินไป
-- **Fast mode**: ต้องใช้ Claude Code v2.1.96+ และเพิ่ม `"CLAUDE_CODE_SKIP_FAST_MODE_ORG_CHECK": "1"` โดยใช้ได้กับ Opus 4.6, 4.7, 4.8 และ 5 เท่านั้น (ถ้าใช้ alias `~anthropic/claude-opus-latest` จะยิงที่ความเร็ว/ราคาปกติ)
-
----
-
-## 🪟 เพิ่มเติมสำหรับ Windows
-
-### ถ้า Claude Code หา Git Bash ไม่เจอ
-
-ลง Git for Windows แล้วแต่ Claude Code ยังบอกว่าหา bash ไม่เจอ ให้เพิ่มบรรทัดนี้ใน `"env"`:
-
-```json
-"CLAUDE_CODE_GIT_BASH_PATH": "C:\\Program Files\\Git\\bin\\bash.exe"
-```
-
-> สังเกตว่า path ของ Windows ต้องใช้ `\\` (backslash สองตัว) ใน JSON เสมอ
-
-### คำสั่งเปิดเว็บทดสอบ
-
-README ใช้ `python3 -m http.server 8000` ซึ่งบน Windows มักต้องใช้แบบนี้แทน:
-
-```powershell
-python -m http.server 8000
-```
-
-ถ้ายังไม่ได้ ให้เปิดผ่าน extension **Live Server** ใน VS Code แทนก็ได้ (คลิกขวาที่ `index.html` → Open with Live Server)
-
----
-
 ## แก้ปัญหาที่เจอบ่อย
 
 | อาการ | สาเหตุ / วิธีแก้ |
@@ -326,26 +258,8 @@ python -m http.server 8000
 ## เช็กลิสต์ก่อนเริ่ม workshop
 
 - [ ] `claude --version` ขึ้นเลขเวอร์ชัน
-- [ ] 🪟 Windows: ลง Git for Windows แล้ว (`git --version` รันได้)
-- [ ] `git check-ignore -v .claude/settings.local.json` มีผลลัพธ์ออกมา (กัน key ติดแล้ว)
 - [ ] `/status` ขึ้น `https://openrouter.ai/api`
 - [ ] มียอดใช้งานขึ้นที่หน้า OpenRouter Activity
 - [ ] `git status` **ไม่มี** `.claude/settings.local.json` โผล่ในลิสต์
 
 ---
-
-## ถ้าเผลอ commit key ไปแล้ว
-
-อย่าแค่ลบไฟล์แล้ว commit ใหม่ — key ยังอยู่ใน git history และถือว่ารั่วแล้ว ให้ทำตามนี้:
-
-1. ไปที่ https://openrouter.ai/keys กด **ลบ key ตัวนั้นทิ้งทันที** (สำคัญที่สุด ทำก่อนเลย)
-2. สร้าง key ใหม่
-3. ตรวจว่า `.gitignore` มีบรรทัด `.claude/settings.local.json` อยู่จริง
-4. เอาไฟล์ออกจาก git แต่ยังเก็บไว้ในเครื่อง (คำสั่งเดียวกันทุก OS):
-
-```bash
-git rm --cached .claude/settings.local.json
-git commit -m "remove local settings from version control"
-```
-
-5. ใส่ key ใหม่ลงไฟล์เดิมในเครื่อง แล้วเช็กด้วย `git status` ว่าไม่โผล่มาอีก
