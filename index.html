@@ -1,36 +1,101 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<!--
+  ============================================================
+  SDD WORKSHOP — BASE TEMPLATE (index.html)
+  ============================================================
+  ไฟล์นี้คือ "จุดเริ่มต้นร่วม" ของทุกทีม
+  แต่ละทีมแตก branch ของตัวเอง (เช่น team-1) แล้วแก้ไฟล์นี้ตามโจทย์ของทีม
+  โจทย์ของแต่ละทีมอยู่ที่: specs/โจทย์/team-<เลขทีม>.md
+
+  วิธีใช้:
+  1. อ่านโจทย์ของทีมตัวเองก่อน
+  2. แทนที่ทุกจุดที่เขียนว่า TODO ด้วยเนื้อหาจริงของโจทย์
+  3. ห้ามย้ายไฟล์นี้ไปโฟลเดอร์ย่อย — index.html ต้องอยู่ที่ root เสมอ (ดู constitution ข้อ VII)
+  4. ไฟล์ style.css และ app.js ต้องวางข้าง ๆ ไฟล์นี้ที่ root เช่นกัน
+
+  โครงสร้างด้านล่างเป็นโครงกลางที่ใช้ได้กับทุกโจทย์
+  (ฟอร์มเพิ่มข้อมูล → สรุปตัวเลข → ตัวกรอง → ลิสต์รายการ → empty state)
+  ทีมสามารถเพิ่ม/ลด section ได้ตามโจทย์ แต่ควรคง id หลักไว้เพื่อให้ app.js อ้างอิงตรงกัน
+  ============================================================
+-->
+<html lang="th">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Todo List</title>
-  <link rel="stylesheet" href="styles/main.css" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- TODO: เปลี่ยนเป็นชื่อแอปของทีม เช่น "บันทึกรายรับ-รายจ่าย" -->
+  <title>SDD Workshop — Base Template</title>
+  <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-  <h1>Todo List</h1>
 
-  <!-- Add Issue Form -->
-  <form id="add-issue">
-    <input type="text" id="title" placeholder="Issue title" required />
-    <textarea id="description" placeholder="Optional description"></textarea>
-    <button type="submit">Add</button>
-  </form>
+  <!-- ========== HEADER: ชื่อแอปและคำอธิบาย ========== -->
+  <header class="app-header">
+    <!-- TODO: เปลี่ยนชื่อแอปให้ตรงกับโจทย์ของทีม -->
+    <h1 id="app-title">ชื่อแอปของทีม</h1>
+    <!-- TODO: เปลี่ยนเป็นคำอธิบายสั้น ๆ ว่าแอปนี้ช่วยอะไรผู้ใช้ -->
+    <p id="app-subtitle">คำอธิบายสั้น ๆ ของแอป</p>
+  </header>
 
-  <!-- Issue List -->
-  <ul id="issue-list"></ul>
+  <main class="app-main">
 
-  <!-- History Button -->
-  <button id="history-btn">History</button>
+    <!-- ========== 1) ฟอร์มเพิ่มข้อมูล (Create) ========== -->
+    <section class="card" id="form-section">
+      <h2 class="section-title">เพิ่มรายการใหม่</h2>
 
-  <!-- History Modal -->
-  <div id="history-modal" class="modal hidden">
-    <div class="modal-content">
-      <span class="close" id="history-close">&times;</span>
-      <h2>Issue History</h2>
-      <ul id="history-list"></ul>
-    </div>
-  </div>
+      <!-- TODO: ปรับ input/select ให้ครบตามข้อ 2.1 ของโจทย์ทีมตัวเอง -->
+      <form id="item-form" class="form" autocomplete="off">
+        <input
+          type="text"
+          id="input-name"
+          class="input"
+          placeholder="พิมพ์ชื่อรายการ..."
+          required
+        >
+        <button type="submit" class="btn btn-primary">เพิ่ม</button>
+      </form>
 
-  <script src="scripts/app.js"></script>
+      <!-- ข้อความแจ้ง error ตอน validate ไม่ผ่าน (ซ่อนไว้ตอนเริ่มต้น) -->
+      <p id="form-error" class="form-error" hidden></p>
+    </section>
+
+    <!-- ========== 2) สรุปตัวเลขแบบเรียลไทม์ ========== -->
+    <!-- TODO: เปลี่ยนข้อความสรุปให้ตรงกับโจทย์ (เช่น ยอดคงเหลือ / ความคืบหน้า / จำนวนที่เหลือ) -->
+    <section class="card summary" id="summary-section">
+      <p id="summary-text">ยังไม่มีข้อมูลสรุป</p>
+    </section>
+
+    <!-- ========== 3) ตัวกรอง (Filter) ========== -->
+    <!-- TODO: เปลี่ยนชื่อปุ่มและค่า data-filter ให้ตรงกับมุมมองที่โจทย์กำหนด -->
+    <section class="filters" id="filter-section">
+      <button type="button" class="btn btn-filter is-active" data-filter="all">ทั้งหมด</button>
+      <button type="button" class="btn btn-filter" data-filter="active">ยังไม่เสร็จ</button>
+      <button type="button" class="btn btn-filter" data-filter="done">เสร็จแล้ว</button>
+    </section>
+
+    <!-- ========== 4) ลิสต์รายการ + empty state ========== -->
+    <section class="card" id="list-section">
+      <!-- app.js จะ render รายการเข้ามาที่นี่ -->
+      <ul id="item-list" class="item-list"></ul>
+
+      <!-- TODO: เปลี่ยนข้อความต้อนรับให้ตรงกับโจทย์ -->
+      <p id="empty-state" class="empty-state">
+        ยังไม่มีรายการ เริ่มเพิ่มรายการแรกของคุณได้เลย!
+      </p>
+    </section>
+
+    <!-- ========== 5) ปุ่มจัดการทั้งชุด (Bulk action) ========== -->
+    <!-- TODO: เปลี่ยนข้อความปุ่มตามโจทย์ เช่น "ล้างรายการที่เสร็จแล้ว" / "เริ่มวันใหม่" -->
+    <section class="actions">
+      <button type="button" id="btn-clear" class="btn btn-danger">ล้างรายการทั้งหมด</button>
+    </section>
+
+  </main>
+
+  <footer class="app-footer">
+    <!-- TODO: ใส่เลขทีมและชื่อสมาชิก -->
+    <p>ทีมที่ — | Spec-Driven Development Workshop</p>
+  </footer>
+
+  <script src="./app.js"></script>
 </body>
 </html>

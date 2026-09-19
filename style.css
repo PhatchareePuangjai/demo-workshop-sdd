@@ -1,0 +1,189 @@
+/* ============================================================
+   SDD WORKSHOP — BASE TEMPLATE (style.css)
+   ============================================================
+   สไตล์กลางที่ใช้ได้กับทุกโจทย์ แต่ละทีมแก้ไขได้อิสระ
+   แนะนำให้เริ่มจากการเปลี่ยนค่าสีใน :root เพื่อให้แอปมีเอกลักษณ์ของทีม
+   ต้องวางไฟล์นี้ไว้ที่ root ข้าง ๆ index.html เสมอ
+   ============================================================ */
+
+/* TODO: ปรับชุดสีให้เข้ากับธีมของโจทย์ทีมตัวเอง */
+:root {
+  --color-bg: #f4f5f7;
+  --color-surface: #ffffff;
+  --color-text: #1f2933;
+  --color-muted: #6b7280;
+  --color-primary: #2563eb;
+  --color-danger: #dc2626;
+  --color-success: #16a34a;
+  --color-border: #e5e7eb;
+  --radius: 10px;
+  --gap: 16px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  padding: var(--gap);
+  font-family: "Segoe UI", "Noto Sans Thai", system-ui, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.6;
+}
+
+/* ---------- Layout ---------- */
+.app-header,
+.app-main,
+.app-footer {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.app-header { text-align: center; padding-block: var(--gap); }
+.app-header h1 { margin: 0 0 4px; font-size: 1.6rem; }
+.app-header p { margin: 0; color: var(--color-muted); }
+
+.app-footer {
+  text-align: center;
+  color: var(--color-muted);
+  font-size: 0.85rem;
+  padding-block: var(--gap);
+}
+
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: var(--gap);
+  margin-bottom: var(--gap);
+}
+
+.section-title { margin: 0 0 12px; font-size: 1rem; }
+
+/* ---------- Form ---------- */
+.form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.input,
+.select {
+  flex: 1 1 180px;
+  min-width: 0;                 /* กัน input ดันจนจอล้นบนมือถือ */
+  padding: 10px 12px;
+  font: inherit;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: #fff;
+}
+
+.input:focus,
+.select:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 1px;
+}
+
+.form-error {
+  margin: 10px 0 0;
+  color: var(--color-danger);
+  font-size: 0.9rem;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  padding: 10px 16px;
+  font: inherit;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: #fff;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.btn:hover { filter: brightness(0.97); }
+
+.btn-primary {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+}
+
+.btn-danger {
+  background: transparent;
+  border-color: var(--color-danger);
+  color: var(--color-danger);
+}
+
+.btn-filter.is-active {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+}
+
+.btn-icon {
+  padding: 4px 10px;
+  line-height: 1.2;
+}
+
+/* ---------- Summary & filters ---------- */
+.summary {
+  font-weight: 600;
+  text-align: center;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: var(--gap);
+}
+
+/* ---------- List ---------- */
+.item-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.item:last-child { border-bottom: none; }
+
+.item-text {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;      /* ข้อความยาวต้องขึ้นบรรทัดใหม่ ไม่ล้นขอบจอ */
+}
+
+.item.is-done .item-text {
+  text-decoration: line-through;
+  color: var(--color-muted);
+}
+
+.empty-state {
+  margin: 0;
+  padding: 24px 8px;
+  text-align: center;
+  color: var(--color-muted);
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 480px) {
+  body { padding: 12px; }
+  .app-header h1 { font-size: 1.3rem; }
+  .form { flex-direction: column; }
+  .btn { width: 100%; }
+  .filters .btn { width: auto; flex: 1 1 auto; }
+}

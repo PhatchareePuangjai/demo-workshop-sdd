@@ -1,0 +1,22 @@
+# ============================================================
+# SDD Workshop — .gitignore
+# ============================================================
+
+# Claude Code — ไฟล์ตั้งค่าเฉพาะเครื่อง มี API key อยู่ข้างใน ห้าม commit เด็ดขาด
+.claude/settings.local.json
+
+# ไฟล์ env ต่าง ๆ (อาจมี secret)
+.env
+.env.*
+!.env.example
+
+# ไฟล์ขยะของ macOS / Windows
+.DS_Store
+Thumbs.db
+
+# โฟลเดอร์ของ editor
+.vscode/
+.idea/
+
+# Node (เผื่อมีการลง tool เสริม — ตัวแอปไม่ใช้ npm)
+node_modules/
