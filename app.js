@@ -12,18 +12,13 @@
 
 'use strict';
 
-/* ---------- 1) ค่าคงที่และ state ---------- */
+const STORAGE_KEY = 'habit-tracker-state';
+const DAYS = ['จันทร์', 'อังคาร', 'พุธ', 'พฤหัสบดี', 'ศุกร์', 'เสาร์', 'อาทิตย์'];
 
-// TODO: เปลี่ยน key ให้เป็นชื่อแอปของทีม เช่น 'sdd-team-1-expense'
-const STORAGE_KEY = 'sdd-workshop-base';
-
-// TODO: ปรับ field ของ item ให้ครบตามโจทย์ (เช่น amount, category, rating, dueDate)
 let state = {
-  items: [],        // รายการทั้งหมด
-  filter: 'all',    // มุมมองที่เลือกอยู่
+  habits: [],
+  filter: 'all',
 };
-
-/* ---------- 2) อ้างอิง element จาก index.html ---------- */
 
 const form = document.querySelector('#item-form');
 const inputName = document.querySelector('#input-name');
@@ -34,13 +29,58 @@ const itemList = document.querySelector('#item-list');
 const emptyState = document.querySelector('#empty-state');
 const clearButton = document.querySelector('#btn-clear');
 
-/* ---------- 3) localStorage ---------- */
+function createId() {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+}
+
+function escapeHtml(text) {
+  return String(text).replace(/[&<>"']/g, (char) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  })[char]);
+}
+
+function showError(message) {
+  formError.textContent = message;
+  formError.hidden = !message;
+}
+
+function getTodayColumnIndex() {
+  const jsDay = new Date().getDay();
+  return (jsDay + 6) % 7;
+}
+
+function normalizeHabitName(value) {
+  return String(value).trim();
+}
+
+function getHabitCompletionCount(habit) {
+  return Array.isArray(habit.completions)
+    ? habit.completions.filter(Boolean).length
+    : 0;
+}
+
+function getVisibleHabits() {
+  if (state.filter === 'incomplete') {
+    return state.habits.filter((habit) => getHabitCompletionCount(habit) < 7);
+  }
+  return state.habits;
+}
 
 function loadState() {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      state = { ...state, ...JSON.parse(saved) };
+    if (!saved) return;
+
+    const parsed = JSON.parse(saved);
+    if (parsed && Array.isArray(parsed.habits)) {
+      state = {
+        ...state,
+        ...parsed,
+      };
     }
   } catch (error) {
     console.warn('โหลดข้อมูลเดิมไม่สำเร็จ เริ่มจากข้อมูลว่าง', error);
@@ -55,74 +95,90 @@ function saveState() {
   }
 }
 
-/* ---------- 4) ตัวช่วย ---------- */
-
-function createId() {
-  return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
-}
-
-// ป้องกันข้อความของผู้ใช้ทำ HTML พัง เมื่อนำไปใส่ด้วย innerHTML
-function escapeHtml(text) {
-  return String(text).replace(/[&<>"']/g, (char) => ({
-    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
-  })[char]);
-}
-
-function showError(message) {
-  formError.textContent = message;
-  formError.hidden = !message;
-}
-
-/* ---------- 5) การกระทำต่อข้อมูล (Create / Update / Delete) ---------- */
-
-// TODO: รับค่าจากช่องกรอกอื่น ๆ ตามโจทย์ แล้วเก็บเข้า item ด้วย
-function addItem(name) {
-  state.items.unshift({
+function addHabit(name) {
+  state.habits.unshift({
     id: createId(),
-    name: name,
-    done: false,
-    createdAt: new Date().toISOString(),
+    name,
+    completions: Array(7).fill(false),
   });
 }
 
-function toggleItem(id) {
-  const item = state.items.find((entry) => entry.id === id);
-  if (item) item.done = !item.done;
+function toggleHabitDay(habitId, dayIndex) {
+  const habit = state.habits.find((entry) => entry.id === habitId);
+  if (!habit || !Array.isArray(habit.completions)) return;
+
+  habit.completions[dayIndex] = !habit.completions[dayIndex];
 }
 
-function deleteItem(id) {
-  state.items = state.items.filter((entry) => entry.id !== id);
+function deleteHabit(habitId) {
+  state.habits = state.habits.filter((entry) => entry.id !== habitId);
 }
 
-// TODO: เปลี่ยนเงื่อนไขให้ตรงกับตัวกรองของโจทย์
-function getVisibleItems() {
-  if (state.filter === 'active') return state.items.filter((item) => !item.done);
-  if (state.filter === 'done') return state.items.filter((item) => item.done);
-  return state.items;
+function resetWeek() {
+  state.habits = state.habits.map((habit) => ({
+    ...habit,
+    completions: Array(7).fill(false),
+  }));
 }
 
-/* ---------- 6) วาดหน้าจอ ---------- */
+function renderSummary() {
+  const totalCompleted = state.habits.reduce(
+    (sum, habit) => sum + getHabitCompletionCount(habit),
+    0,
+  );
+  const possible = state.habits.length * 7;
+  const percent = possible > 0 ? Math.round((totalCompleted / possible) * 100) : 0;
+  summaryText.textContent = `สัปดาห์นี้ทำสำเร็จแล้ว ${totalCompleted} จาก ${possible} ครั้ง (${percent}%)`;
+}
+
+function renderHabitRows() {
+  const visibleHabits = getVisibleHabits();
+  const todayIndex = getTodayColumnIndex();
+
+  itemList.innerHTML = visibleHabits.map((habit) => {
+    const completed = getHabitCompletionCount(habit);
+
+    return `
+      <tr class="habit-row" data-id="${habit.id}">
+        <td class="habit-name-cell">
+          <span class="habit-name">${escapeHtml(habit.name)}</span>
+        </td>
+        ${DAYS.map((day, index) => {
+          const checked = Boolean(habit.completions[index]);
+          const isToday = index === todayIndex;
+          return `
+            <td class="day-cell ${checked ? 'is-done' : ''} ${isToday ? 'today-highlight' : ''}">
+              <button
+                type="button"
+                class="day-toggle"
+                data-action="toggle-day"
+                data-habit-id="${habit.id}"
+                data-day-index="${index}"
+                aria-label="${day} ${checked ? 'ทำสำเร็จแล้ว' : 'ยังไม่ได้ทำ'}"
+              >${checked ? '✓' : ''}</button>
+            </td>
+          `;
+        }).join('')}
+        <td class="result-cell">${completed}/7 วัน</td>
+        <td class="action-cell">
+          <button type="button" class="btn btn-icon" data-action="edit" data-habit-id="${habit.id}">แก้ไข</button>
+          <button type="button" class="btn btn-icon" data-action="delete" data-habit-id="${habit.id}">ลบ</button>
+        </td>
+      </tr>
+    `;
+  }).join('');
+
+  document.querySelectorAll('.day-header').forEach((header, index) => {
+    header.classList.toggle('today-highlight', index === todayIndex);
+  });
+
+  emptyState.hidden = visibleHabits.length > 0;
+}
 
 function render() {
-  const visibleItems = getVisibleItems();
+  renderSummary();
+  renderHabitRows();
 
-  // ลิสต์รายการ
-  itemList.innerHTML = visibleItems.map((item) => `
-    <li class="item ${item.done ? 'is-done' : ''}" data-id="${item.id}">
-      <input type="checkbox" data-action="toggle" ${item.done ? 'checked' : ''}>
-      <span class="item-text">${escapeHtml(item.name)}</span>
-      <button type="button" class="btn btn-icon" data-action="delete">ลบ</button>
-    </li>
-  `).join('');
-
-  // empty state
-  emptyState.hidden = visibleItems.length > 0;
-
-  // TODO: เปลี่ยนข้อความสรุปให้ตรงกับโจทย์ (ยอดเงิน / เปอร์เซ็นต์ / จำนวนที่เหลือ)
-  const remaining = state.items.filter((item) => !item.done).length;
-  summaryText.textContent = `เหลืออีก ${remaining} รายการ จากทั้งหมด ${state.items.length} รายการ`;
-
-  // ไฮไลต์ปุ่มกรองที่เลือกอยู่
   filterSection.querySelectorAll('.btn-filter').forEach((button) => {
     button.classList.toggle('is-active', button.dataset.filter === state.filter);
   });
@@ -130,33 +186,56 @@ function render() {
   saveState();
 }
 
-/* ---------- 7) เชื่อม event ---------- */
-
 form.addEventListener('submit', (event) => {
   event.preventDefault();
-  const name = inputName.value.trim();
+  const name = normalizeHabitName(inputName.value);
 
-  // TODO: เพิ่มการตรวจสอบอื่น ๆ ตามข้อ 2.1 ของโจทย์ (เช่น ตัวเลขต้องมากกว่า 0)
   if (!name) {
-    showError('กรุณากรอกข้อมูลก่อนกดเพิ่ม');
+    showError('กรุณากรอกชื่อนิสัยก่อนกดเพิ่ม');
+    inputName.focus();
     return;
   }
 
   showError('');
-  addItem(name);
+  addHabit(name);
   form.reset();
   inputName.focus();
   render();
 });
 
-// ใช้ event delegation: ผูก event ครั้งเดียวที่ลิสต์ แทนการผูกทุกแถว
 itemList.addEventListener('click', (event) => {
   const action = event.target.dataset.action;
-  const id = event.target.closest('.item')?.dataset.id;
-  if (!action || !id) return;
+  const habitId = event.target.dataset.habitId;
+  const dayIndex = Number(event.target.dataset.dayIndex);
 
-  if (action === 'toggle') toggleItem(id);
-  if (action === 'delete') deleteItem(id);
+  if (!action || !habitId) return;
+
+  if (action === 'toggle-day') {
+    toggleHabitDay(habitId, dayIndex);
+  }
+
+  if (action === 'delete') {
+    if (!confirm('ต้องการลบนิสัยนี้ใช่หรือไม่?')) return;
+    deleteHabit(habitId);
+  }
+
+  if (action === 'edit') {
+    const habit = state.habits.find((entry) => entry.id === habitId);
+    if (!habit) return;
+
+    const nextName = window.prompt('แก้ไขชื่อนิสัย', habit.name);
+    if (nextName === null) return;
+
+    const cleaned = normalizeHabitName(nextName);
+    if (!cleaned) {
+      showError('ชื่อนิสัยไม่สามารถเป็นช่องว่างได้');
+      return;
+    }
+
+    habit.name = cleaned;
+    showError('');
+  }
+
   render();
 });
 
@@ -167,15 +246,13 @@ filterSection.addEventListener('click', (event) => {
   render();
 });
 
-// TODO: เปลี่ยนพฤติกรรมปุ่มนี้ตามโจทย์ (เช่น ลบเฉพาะรายการที่เสร็จแล้ว)
 clearButton.addEventListener('click', () => {
-  if (state.items.length === 0) return;
-  if (!confirm('ยืนยันการล้างรายการทั้งหมด?')) return;
-  state.items = [];
+  if (state.habits.length === 0) return;
+  if (!confirm('รีเซ็ตสัปดาห์ใหม่จะล้างเครื่องหมายทุกวันของนิสัยทั้งหมด ใช่หรือไม่?')) return;
+  resetWeek();
   render();
 });
 
-/* ---------- 8) เริ่มทำงาน ---------- */
-
 loadState();
 render();
+
