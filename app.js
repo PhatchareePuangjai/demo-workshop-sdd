@@ -34,6 +34,19 @@ function saveState() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 }
 
+function toggleItem(id) {
+  state.items = state.items.map(item =>
+    item.id === id ? { ...item, isMemorized: !item.isMemorized } : item
+  );
+  render();
+}
+
+function bulkDeleteMemorized() {
+  state.items = state.items.filter(item => !item.isMemorized);
+  state.currentReviewIndex = 0;
+  render();
+}
+
 function createId() {
   return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
 }
@@ -46,10 +59,35 @@ function showError(msg) {
 // Rendering
 function render() {
   saveState();
-  // Simplified render skeleton for now
+  
+  // Progress Summary
+  const total = state.items.length;
+  const memorized = state.items.filter(i => i.isMemorized).length;
+  summaryText.textContent = total === 0 
+    ? 'ยังไม่มีคำศัพท์' 
+    : `จำได้แล้ว ${memorized} จาก ${total} คำ`;
+  
+  // Empty State Logic
+  const hasItems = state.items.length > 0;
+  itemList.hidden = !hasItems;
+  emptyState.hidden = hasItems;
+
+  // Render list (assuming list item rendering structure)
+  itemList.innerHTML = '';
+  state.items.forEach(item => {
+    const li = document.createElement('li');
+    li.className = `item ${item.isMemorized ? 'is-memorized' : ''}`;
+    li.innerHTML = `
+      <div class="item-text">${item.vocab} - ${item.translation}</div>
+      <button class="btn btn-icon" onclick="toggleItem('${item.id}')">✓</button>
+    `;
+    itemList.appendChild(li);
+  });
+  
   console.log('Rendering state:', state);
 }
 
 // Initialize
+btnClear.addEventListener('click', bulkDeleteMemorized);
 loadState();
 render();
