@@ -1,12 +1,7 @@
 /* ============================================================
-   SDD WORKSHOP — BASE TEMPLATE (style.css)
-   ============================================================
-   สไตล์กลางที่ใช้ได้กับทุกโจทย์ แต่ละทีมแก้ไขได้อิสระ
-   แนะนำให้เริ่มจากการเปลี่ยนค่าสีใน :root เพื่อให้แอปมีเอกลักษณ์ของทีม
-   ต้องวางไฟล์นี้ไว้ที่ root ข้าง ๆ index.html เสมอ
+   Flashcard App — Styles
    ============================================================ */
 
-/* TODO: ปรับชุดสีให้เข้ากับธีมของโจทย์ทีมตัวเอง */
 :root {
   --color-bg: #f4f5f7;
   --color-surface: #ffffff;
@@ -31,24 +26,8 @@ body {
   line-height: 1.6;
 }
 
-/* ---------- Layout ---------- */
-.app-header,
-.app-main,
-.app-footer {
-  max-width: 720px;
-  margin: 0 auto;
-}
-
+.app-header, .app-main { max-width: 720px; margin: 0 auto; }
 .app-header { text-align: center; padding-block: var(--gap); }
-.app-header h1 { margin: 0 0 4px; font-size: 1.6rem; }
-.app-header p { margin: 0; color: var(--color-muted); }
-
-.app-footer {
-  text-align: center;
-  color: var(--color-muted);
-  font-size: 0.85rem;
-  padding-block: var(--gap);
-}
 
 .card {
   background: var(--color-surface);
@@ -60,44 +39,66 @@ body {
 
 .section-title { margin: 0 0 12px; font-size: 1rem; }
 
-/* ---------- Form ---------- */
-.form {
+/* Form */
+.form { display: flex; flex-wrap: wrap; gap: 8px; }
+.input { flex: 1 1 180px; padding: 10px 12px; border: 1px solid var(--color-border); border-radius: var(--radius); }
+.form-error { color: var(--color-danger); font-size: 0.9rem; }
+
+/* Buttons */
+.btn { padding: 8px 16px; border: 1px solid var(--color-border); border-radius: var(--radius); background: #fff; cursor: pointer; }
+.btn-primary { background: var(--color-primary); color: white; border: none; }
+.btn-danger { background: var(--color-danger); color: white; border: none; }
+.btn-filter.is-active { background: var(--color-primary); color: white; }
+
+/* ---------- CSS 3D Card Flipping Animation ---------- */
+.flashcard-container {
+  perspective: 1000px;
+  width: 100%;
+  max-width: 400px;
+  height: 200px;
+  margin: 20px auto;
+  cursor: pointer;
+}
+
+.flashcard-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.4s ease-in-out;
+  transform-style: preserve-3d;
+}
+
+.flashcard-container.is-flipped .flashcard-inner {
+  transform: rotateY(180deg);
+}
+
+.flashcard-front, .flashcard-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: var(--radius);
+  border: 2px solid var(--color-border);
+  background: var(--color-surface);
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: var(--gap);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
-.input,
-.select {
-  flex: 1 1 180px;
-  min-width: 0;                 /* กัน input ดันจนจอล้นบนมือถือ */
-  padding: 10px 12px;
-  font: inherit;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  background: #fff;
+.flashcard-back {
+  transform: rotateY(180deg);
+  background: #f8fafc;
 }
 
-.input:focus,
-.select:focus {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 1px;
-}
+.navigation { display: flex; justify-content: center; gap: 10px; margin-top: 10px; }
+.item-list { list-style: none; padding: 0; }
+.item-list li { border-bottom: 1px solid var(--color-border); padding: 8px 0; display: flex; justify-content: space-between; align-items: center; }
+.memorized { border-left: 4px solid var(--color-success); padding-left: 10px; }
 
-.form-error {
-  margin: 10px 0 0;
-  color: var(--color-danger);
-  font-size: 0.9rem;
-}
-
-/* ---------- Buttons ---------- */
-.btn {
-  padding: 10px 16px;
-  font: inherit;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  background: #fff;
-  color: var(--color-text);
   cursor: pointer;
 }
 
