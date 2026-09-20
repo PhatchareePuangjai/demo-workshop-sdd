@@ -43,12 +43,117 @@ function showError(msg) {
   formError.hidden = !msg;
 }
 
+// Logic: Create / Edit Card
+function saveCard(vocab, translation) {
+  if (!vocab.trim() || !translation.trim()) {
+    showError('กรุณากรอกคำศัพท์และคำแปลให้ครบถ้วน');
+    return false;
+  }
+
+  if (state.editingId) {
+    const card = state.items.find(i => i.id === state.editingId);
+    if (card) {
+      card.vocab = vocab.trim();
+      card.translation = translation.trim();
+    }
+    state.editingId = null;
+    form.querySelector('button[type="submit"]').textContent = 'เพิ่มบัตร';
+  } else {
+    const newCard = {
+      id: createId(),
+      vocab: vocab.trim(),
+      translation: translation.trim(),
+      isMemorized: false,
+    };
+    state.items.push(newCard);
+  }
+  
+  render();
+  return true;
+}
+
 // Rendering
 function render() {
   saveState();
-  // Simplified render skeleton for now
-  console.log('Rendering state:', state);
+  
+  // 1. Render List
+  itemList.innerHTML = '';
+  state.items.forEach(card => {
+    const li = document.createElement('li');
+    li.className = `item ${card.isMemorized ? 'memorized' : ''}`;
+    li.innerHTML = `
+      <div class="item-text"><strong>${card.vocab}</strong>: ${card.translation}</div>
+      <div class="actions">
+        <button class="btn btn-icon" onclick="toggleMemorized('${card.id}')">✓</button>
+        <button class="btn btn-icon" onclick="startEdit('${card.id}')">✎</button>
+        <button class="btn btn-icon" onclick="deleteCard('${card.id}')">✕</button>
+      </div>
+    `;
+    itemList.appendChild(li);
+  });
+  emptyState.hidden = state.items.length > 0;
+
+  // 2. Render Carousel
+  renderCarousel();
 }
+
+function renderCarousel() {
+  const filtered = state.items.filter(item => {
+    if (state.filter === 'memorized') return item.isMemorized;
+    if (state.filter === 'not_memorized') return !item.isMemorized;
+    return true;
+  });
+  
+  if (filtered.length === 0) {
+    carousel.innerHTML = '<p>ไม่มีบัตรคำในหมวดหมู่นี้</p>';
+    return;
+  }
+
+  const card = filtered[state.currentReviewIndex % filtered.length];
+  carousel.innerHTML = `
+    <div class="flashcard-container" onclick="this.classList.toggle('is-flipped')">
+      <div class="flashcard-inner">
+        <div class="flashcard-front">${card.vocab}</div>
+        <div class="flashcard-back">${card.translation}</div>
+      </div>
+    </div>
+    <p>บัตรที่ ${ (state.currentReviewIndex % filtered.length) + 1} จาก ${filtered.length}</p>
+  `;
+}
+
+// Event Listeners
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  if (saveCard(inputVocab.value, inputTranslation.value)) {
+    inputVocab.value = '';
+    inputTranslation.value = '';
+    showError('');
+  }
+});
+
+window.startEdit = (id) => {
+  const card = state.items.find(i => i.id === id);
+  if (card) {
+    state.editingId = id;
+    inputVocab.value = card.vocab;
+    inputTranslation.value = card.translation;
+    form.querySelector('button[type="submit"]').textContent = 'บันทึกการแก้ไข';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+};
+
+window.deleteCard = (id) => {
+  state.items = state.items.filter(i => i.id !== id);
+  render();
+};
+
+window.toggleMemorized = (id) => {
+  const card = state.items.find(i => i.id === id);
+  if (card) {
+    card.isMemorized = !card.isMemorized;
+    render();
+  }
+};
 
 // Initialize
 loadState();
