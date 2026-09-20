@@ -89,33 +89,6 @@ function saveCard(vocab, translation) {
 function render() {
   saveState();
   
-<<<<<<< HEAD
-  // Progress Summary
-  const total = state.items.length;
-  const memorized = state.items.filter(i => i.isMemorized).length;
-  summaryText.textContent = total === 0 
-    ? 'ยังไม่มีคำศัพท์' 
-    : `จำได้แล้ว ${memorized} จาก ${total} คำ`;
-  
-  // Empty State Logic
-  const hasItems = state.items.length > 0;
-  itemList.hidden = !hasItems;
-  emptyState.hidden = hasItems;
-
-  // Render list (assuming list item rendering structure)
-  itemList.innerHTML = '';
-  state.items.forEach(item => {
-    const li = document.createElement('li');
-    li.className = `item ${item.isMemorized ? 'is-memorized' : ''}`;
-    li.innerHTML = `
-      <div class="item-text">${item.vocab} - ${item.translation}</div>
-      <button class="btn btn-icon" onclick="toggleItem('${item.id}')">✓</button>
-    `;
-    itemList.appendChild(li);
-  });
-  
-  console.log('Rendering state:', state);
-=======
   // 1. Render List
   itemList.innerHTML = '';
   state.items.forEach(card => {
@@ -135,7 +108,6 @@ function render() {
 
   // 2. Render Carousel
   renderCarousel();
->>>>>>> 1796ea44996e582d179f880f44444345d33c71ad
 }
 
 function renderCarousel() {
