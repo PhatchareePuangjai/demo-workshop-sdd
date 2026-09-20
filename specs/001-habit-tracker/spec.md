@@ -1,4 +1,4 @@
-# Feature Specification: Web Habit Tracker (ติดตามนิสัยประจำวัน)
+# ข้อกำหนดคุณสมบัติ (Feature Specification): Web Habit Tracker (ระบบติดตามนิสัยประจำวัน)
 
 **Feature Branch**: `001-habit-tracker`
 
@@ -6,102 +6,102 @@
 
 **Status**: Draft
 
-**Input**: User description: "Specs from specs/โจทย์/team-4.md"
+**Input**: ข้อมูลความต้องการของผู้ใช้: "ข้อมูลโจทย์จาก specs/โจทย์/team-4.md"
 
-## User Scenarios & Testing *(mandatory)*
+## สถานการณ์ของผู้ใช้และการทดสอบ (User Scenarios & Testing) *(บังคับ)*
 
-### User Story 1 - Create and View Habits (Priority: P1)
+### เรื่องราวของผู้ใช้ 1 - การสร้างและดูนิสัยประจำวัน (Priority: P1)
 
-As a user looking to build consistency, I want to add new habits to my weekly tracker and toggle their daily completion states from Monday to Sunday, so that I can see my progress visually.
+ในฐานะผู้ใช้งานที่ต้องการสร้างความสม่ำเสมอในชีวิต ฉันต้องการเพิ่มนิสัยใหม่ๆ ลงในตารางติดตามประจำสัปดาห์ และต้องการคลิกเปลี่ยนสถานะการทำสำเร็จในแต่ละวัน (วันจันทร์ถึงวันอาทิตย์) เพื่อให้ฉันมองเห็นความก้าวหน้าของตัวเองได้อย่างชัดเจน
 
-**Why this priority**: This is the core MVP loop of the application. Without the ability to add a habit, view the weekly grid, or toggle completions, the tracker has no utility.
+**เหตุผลของลำดับความสำคัญนี้**: นี่คือการทำงานหลักขั้นพื้นฐาน (Core MVP) ของระบบ หากไม่มีระบบเพิ่มนิสัย การแสดงตาราง หรือการคลิกเปลี่ยนสถานะ ระบบติดตามนี้ก็จะไม่สามารถใช้งานจริงได้เลย
 
-**Independent Test**: Can be fully tested by creating a habit named "Read Book", checking the Monday cell, and verifying that the cell highlights as "completed" and shows "1/7 วัน" (1/7 days).
+**การทดสอบที่เป็นอิสระ**: สามารถทดสอบแบบแยกเดี่ยวได้โดยการพิมพ์ชื่อนิสัยว่า "อ่านหนังสือ" แล้วกดบันทึก จากนั้นลองคลิกที่ช่องวันจันทร์เพื่อสลับสถานะ และตรวจสอบว่าช่องนั้นแสดงสัญลักษณ์ว่า "ทำสำเร็จแล้ว" พร้อมทั้งตัวเลขสรุปในแถวนั้นเปลี่ยนเป็น "1/7 วัน"
 
-**Acceptance Scenarios**:
+**สถานการณ์การยอมรับ (Acceptance Scenarios)**:
 
-1. **Given** the application is loaded with no habits, **When** the user types "Read Book" in the habit input field and presses Enter (or clicks the add button), **Then** "Read Book" is added to the weekly habit list table and stored in LocalStorage.
-2. **Given** a habit "Read Book" in the table, **When** the user clicks on the cell under the "จันทร์" (Monday) column, **Then** that cell's background color changes to indicate completion (e.g., green/blue with a checkmark), the individual habit summary updates to "1/7 วัน", and the state is persisted.
-3. **Given** a habit cell "จันทร์" (Monday) which is in "Done" state, **When** the user clicks it again, **Then** the cell reverts to its "Undone" state, the habit summary updates to "0/7 วัน", and the state is persisted.
-
----
-
-### User Story 2 - Real-time Progress and Multi-view Filtering (Priority: P2)
-
-As a goal-oriented user, I want to see a live visual summary of my weekly progress and filter my habit list, so that I can easily focus on habits that still need attention.
-
-**Why this priority**: Live summary stats and filtering provide immediate motivation and help users manage multiple habits efficiently as the list grows.
-
-**Independent Test**: Can be fully tested by creating 2 habits, marking one as completed for all 7 days and the other with only 3 days completed, then filtering by "เฉพาะที่ยังทำไม่ครบ" and verifying that only the second habit is shown.
-
-**Acceptance Scenarios**:
-
-1. **Given** two habits exist (e.g., "Exercise" and "Read Book") resulting in 14 possible completions for the week, **When** the user marks "Exercise" completed for 3 days and "Read Book" for 2 days, **Then** the header summary text dynamically displays: "สัปดาห์นี้ทำสำเร็จแล้ว 5 จาก 14 ครั้ง (36%)".
-2. **Given** two habits exist: "Exercise" (7/7 days completed) and "Read Book" (5/7 days completed), **When** the user selects the "เฉพาะที่ยังทำไม่ครบ" filter, **Then** only "Read Book" is rendered in the list.
-3. **Given** the "เฉพาะที่ยังทำไม่ครบ" filter is active, **When** the user selects the "ทั้งหมด" filter, **Then** both "Exercise" and "Read Book" are rendered in the list.
+1. **กำหนดให้ (Given)** ระบบเปิดขึ้นมาและยังไม่มีรายชื่อนิสัยใดๆ **เมื่อ (When)** ผู้ใช้พิมพ์คำว่า "อ่านหนังสือ" ในช่องกรอกข้อมูลแล้วกด Enter (หรือคลิกปุ่มเพิ่ม) **แล้วผลที่ได้คือ (Then)** นิสัย "อ่านหนังสือ" จะถูกเพิ่มเข้าไปในตารางนิสัยประจำสัปดาห์ทันที และข้อมูลนี้จะถูกบันทึกไว้ใน LocalStorage
+2. **กำหนดให้ (Given)** มีนิสัย "อ่านหนังสือ" อยู่ในตารางแล้ว **เมื่อ (When)** ผู้ใช้คลิกในช่องตารางของ "วันจันทร์" **แล้วผลที่ได้คือ (Then)** พื้นหลังของช่องวันจันทร์จะเปลี่ยนสีหรือมีเครื่องหมายถูกปรากฏขึ้นเพื่อแสดงว่าทำสำเร็จแล้ว สรุปผลลัพธ์รายแถวจะอัปเดตเป็น "1/7 วัน" และสถานะนี้จะถูกบันทึกแบบคงอยู่ถาวร
+3. **กำหนดให้ (Given)** ช่องวันจันทร์ของนิสัย "อ่านหนังสือ" มีสถานะทำสำเร็จแล้ว (Done) **เมื่อ (When)** ผู้ใช้คลิกที่ช่องนั้นอีกครั้ง **แล้วผลที่ได้คือ (Then)** ช่องนั้นจะกลับคืนสู่สถานะยังไม่ได้ทำ (Undone) ตัวเลขสรุปรายแถวจะอัปเดตกลับเป็น "0/7 วัน" และสถานะใน LocalStorage จะอัปเดตตามทันที
 
 ---
 
-### User Story 3 - Habit Management: Editing, Deleting, and Weekly Reset (Priority: P3)
+### เรื่องราวของผู้ใช้ 2 - การแสดงสรุปผลแบบเรียลไทม์และการกรองข้อมูล (Priority: P2)
 
-As a user whose routine changes, I want to edit habit names, delete habits I no longer wish to track, and reset my completions for a new week while keeping my list of habits.
+ในฐานะผู้ใช้งานที่มีเป้าหมายชัดเจน ฉันต้องการเห็นข้อมูลสรุปความสำเร็จของทั้งสัปดาห์แบบเรียลไทม์ และต้องการตัวกรองเพื่อเลือกดูนิสัยต่างๆ เพื่อให้ฉันมีแรงจูงใจและสามารถโฟกัสกับนิสัยที่ยังทำไม่ครบได้อย่างสะดวก
 
-**Why this priority**: Real life requires flexibility. Users need to correct typos, retire habits, and restart their week without re-entering all their habits.
+**เหตุผลของลำดับความสำคัญนี้**: ข้อมูลสรุปความสำเร็จและการกรองข้อมูลช่วยเพิ่มความสะดวกและกระตุ้นแรงบันดาลใจให้ผู้ใช้งานได้อย่างมาก โดยเฉพาะเมื่อมีรายการนิสัยจำนวนมาก
 
-**Independent Test**: Can be fully tested by clicking edit on a habit name, renaming it, deleting a habit after confirming, and clicking the "Reset week" button to wipe all completions back to 0/7.
+**การทดสอบที่เป็นอิสระ**: สามารถทดสอบได้โดยสร้างนิสัยขึ้นมา 2 รายการ จากนั้นเลือกทำครบทุก 7 วันในนิสัยแรก และทำเพียง 3 วันในนิสัยที่สอง เมื่อคลิกเลือกตัวกรอง "เฉพาะที่ยังทำไม่ครบ" ระบบต้องแสดงผลเฉพาะนิสัยที่สองเท่านั้น
 
-**Acceptance Scenarios**:
+**สถานการณ์การยอมรับ (Acceptance Scenarios)**:
 
-1. **Given** a habit "Exer-cise" in the list, **When** the user clicks its edit icon or name, types "Exercise", and saves, **Then** the habit name is successfully updated to "Exercise" across the view and LocalStorage.
-2. **Given** a habit "Bad Habit" in the list, **When** the user clicks its delete button and confirms the prompt, **Then** "Bad Habit" is completely removed from the table and LocalStorage.
-3. **Given** multiple habits exist with various completions checked, **When** the user clicks the "รีเซ็ตสัปดาห์ใหม่" (Reset New Week) button and confirms, **Then** all weekly completion cells revert to "Undone", individual summaries reset to "0/7 วัน", the overall weekly progress resets to "0 จาก X ครั้ง (0%)", while all habit names are preserved.
+1. **กำหนดให้ (Given)** มีนิสัยในระบบอยู่ 2 รายการ (เช่น "ออกกำลังกาย" และ "อ่านหนังสือ") ซึ่งมีโอกาสทำรวมกันได้ทั้งหมด 14 ครั้งในสัปดาห์นี้ **เมื่อ (When)** ผู้ใช้คลิกทำ "ออกกำลังกาย" ไป 3 วัน และ "อ่านหนังสือ" ไป 2 วัน **แล้วผลที่ได้คือ (Then)** ตัวอักษรแสดงสรุปความสำเร็จที่หัวเว็บจะแสดงผลแบบไดนามิกว่า "สัปดาห์นี้ทำสำเร็จแล้ว 5 จาก 14 ครั้ง (36%)"
+2. **กำหนดให้ (Given)** มีนิสัยในระบบอยู่ 2 รายการคือ "ออกกำลังกาย" (ทำครบ 7/7 วันแล้ว) และ "อ่านหนังสือ" (ทำไปเพียง 5/7 วัน) **เมื่อ (When)** ผู้ใช้เลือกตัวกรอง "เฉพาะที่ยังทำไม่ครบ" **แล้วผลที่ได้คือ (Then)** ระบบจะแสดงผลเฉพาะแถวนิสัย "อ่านหนังสือ" เท่านั้น
+3. **กำหนดให้ (Given)** ตัวกรองระบบกำลังทำงานอยู่ที่มุมมอง "เฉพาะที่ยังทำไม่ครบ" **เมื่อ (When)** ผู้ใช้คลิกเลือกตัวกรองเป็น "ทั้งหมด" **แล้วผลที่ได้คือ (Then)** แถวนิสัยทั้ง "ออกกำลังกาย" และ "อ่านหนังสือ" จะกลับมาแสดงผลพร้อมกันทั้งหมด
 
-### Edge Cases
+---
 
-- **Empty Habit Name**: If a user attempts to add a blank name or name with only spaces, the system MUST prevent submission, show an error message `#form-error`, and keep focus on the input field.
-- **Extremely Long Habit Names**: If a habit name is extremely long (e.g., 100+ characters), the name MUST wrap or show ellipsis in a clean layout without overflowing the table container, distorting column widths, or causing horizontal layout breakage.
-- **Empty State**: When there are no habits tracked, the table and filters are hidden, and a welcoming empty-state container `#empty-state` is displayed with the message: "ยังไม่มีนิสัยที่ติดตาม เริ่มสร้างนิสัยดี ๆ อันแรกของคุณได้เลย!".
-- **Responsive Layout**: On mobile viewports, the weekly tracker table must fit the device width elegantly. If columns exceed screen width, the table container must allow smooth horizontal scrolling (`overflow-x: auto`), ensuring cells remain large enough to tap easily.
-- **Today Column Highlight**: The column corresponding to the current day of the week (determined via client's local system date) MUST have a prominent CSS style class (e.g., today-highlight) applied to highlight it, making it clear to the user which column is today.
+### เรื่องราวของผู้ใช้ 3 - การจัดการรายชื่อนิสัย: การแก้ไข การลบ และการรีเซ็ตสัปดาห์ใหม่ (Priority: P3)
 
-## Requirements *(mandatory)*
+ในฐานะผู้ใช้งานที่กิจวัตรประจำวันอาจเปลี่ยนแปลงไปตามสถานการณ์ ฉันต้องการแก้ไขชื่อนิสัย ลบนิสัยที่เลิกทำแล้วออก และรีเซ็ตการติ๊กเลือกทั้งหมดเพื่อเริ่มสัปดาห์ใหม่ โดยยังคงเก็บรายชื่อนิสัยที่ต้องการทำต่อไปไว้
 
-### Functional Requirements
+**เหตุผลของลำดับความสำคัญนี้**: ชีวิตจริงต้องการความยืดหยุ่น ผู้ใช้ต้องแก้ไขคำผิด ตัดนิสัยที่ไม่ต้องการออก และเริ่มสัปดาห์ใหม่ได้โดยไม่ต้องเสียเวลานั่งพิมพ์รายชื่อนิสัยเหล่านั้นใหม่อีกรอบ
 
-- **FR-001**: System MUST allow users to add new habits via an input field with submission on clicking the submit button or pressing the `Enter` key.
-- **FR-002**: System MUST trim whitespace from the habit name input and prevent empty entries from being added, showing a message inside `#form-error` if an invalid entry is attempted.
-- **FR-003**: System MUST render habits as rows in a responsive HTML table, with columns for the habit name, days from Monday to Sunday, individual weekly completion counts (e.g., "X/7 วัน"), and management controls (Edit, Delete).
-- **FR-004**: System MUST allow users to click any day cell (Monday to Sunday) to toggle its state between "Completed" (Done) and "Incomplete" (Undone).
-- **FR-005**: System MUST render completed day cells with a distinct background color and/or a checkmark icon to distinguish them from incomplete cells.
-- **FR-006**: System MUST show an individual habit summary for each row displaying the number of completed days out of 7 (e.g., "3/7 วัน").
-- **FR-007**: System MUST provide a filter section with view options "ทั้งหมด" (All) and "เฉพาะที่ยังทำไม่ครบ" (Incomplete), where "Incomplete" displays only habits that have fewer than 7 completed days.
-- **FR-008**: System MUST display a dynamic weekly completion statistic `#summary-text` representing "Completed actions out of Total potential actions (percentage)" (e.g., "สัปดาห์นี้ทำสำเร็จแล้ว 5 จาก 14 ครั้ง (36%)"), where Total potential actions is equal to `number_of_habits * 7`.
-- **FR-009**: System MUST allow users to edit existing habit names in place or through a prompt, saving the changes instantly upon confirmation.
-- **FR-010**: System MUST allow users to delete a habit row from the tracker, showing a standard browser confirmation dialog before deletion.
-- **FR-011**: System MUST provide a "รีเซ็ตสัปดาห์ใหม่" (Reset New Week) button that clears all checked completions for all habits (setting them to "Undone") while leaving the list of habit names intact, with a confirmation dialog before action.
-- **FR-012**: System MUST automatically persist all habit names and completion states to the browser's `localStorage` and load them on page refresh.
-- **FR-013**: System MUST identify the current day of the week (Monday through Sunday) using the client system's local clock and apply a visually distinct highlight style to the corresponding day's table header and cells.
-- **FR-014**: System MUST follow the flat, root-level project structure specified in the Constitution, modifying `index.html`, `style.css`, and `app.js` at the root directory only.
+**การทดสอบที่เป็นอิสระ**: สามารถทดสอบได้โดยการคลิกแก้ไขชื่อนิสัยที่สะกดผิด ลบนิสัยออกหลังจากกดยืนยันการลบ และคลิกปุ่ม "รีเซ็ตสัปดาห์ใหม่" เพื่อล้างเครื่องหมายถูกออกทั้งหมดในครั้งเดียวโดยคงชื่อนิสัยไว้
 
-### Key Entities *(include if feature involves data)*
+**สถานการณ์การยอมรับ (Acceptance Scenarios)**:
 
-- **Habit**: Represents an individual habit tracked by the user.
-  - `id`: Unique identifier (string or number, e.g., timestamp-based).
-  - `name`: Name of the habit (trimmed string, non-empty).
-  - `completions`: An array of 7 boolean values representing completion status for Monday through Sunday (index 0 = Monday, index 6 = Sunday).
+1. **กำหนดให้ (Given)** มีนิสัยชื่อ "Exer-cise" อยู่ในระบบ **เมื่อ (When)** ผู้ใช้คลิกที่ไอคอนแก้ไขหรือคลิกที่ชื่อนิสัย แล้วแก้ไขสะกดคำใหม่เป็น "Exercise" จากนั้นกดยืนยันการแก้ไข **แล้วผลที่ได้คือ (Then)** ชื่อนิสัยจะถูกเปลี่ยนเป็น "Exercise" ทั้งบนหน้าจอและใน LocalStorage ทันที
+2. **กำหนดให้ (Given)** มีนิสัยที่ชื่อว่า "นิสัยที่ไม่ดี" อยู่ในตาราง **เมื่อ (When)** ผู้ใช้คลิกที่ปุ่มลบ (Delete) และกดยืนยันในหน้าต่างที่ระบบถามถามเพื่อตรวจสอบ **แล้วผลที่ได้คือ (Then)** นิสัย "นิสัยที่ไม่ดี" จะถูกลบออกจากตารางและ LocalStorage ทั้งหมด
+3. **กำหนดให้ (Given)** มีรายชื่อนิสัยอยู่หลายรายการและผู้ใช้ได้ติ๊กทำสำเร็จไปแล้วบางส่วน **เมื่อ (When)** ผู้ใช้คลิกที่ปุ่ม "รีเซ็ตสัปดาห์ใหม่" และกดยืนยันคำขอรีเซ็ต **แล้วผลที่ได้คือ (Then)** ช่องสถานะวันจันทร์ถึงอาทิตย์ของทุกๆ นิสัยจะถูกตั้งค่ากลับเป็นว่างเปล่า (ยังไม่ได้ทำ) โดยสถิติรวมรายแถวจะรีเซ็ตกลับเป็น "0/7 วัน" สถิติภาพรวมประจำสัปดาห์รีเซ็ตเป็น "0 จาก X ครั้ง (0%)" ในขณะที่ชื่อของนิสัยทุกอันยังอยู่คงเดิมไม่หายไปไหน
 
-## Success Criteria *(mandatory)*
+### กรณีขอบเขตและเงื่อนไขพิเศษ (Edge Cases)
 
-### Measurable Outcomes
+- **การป้อนชื่อนิสัยว่างเปล่า (Empty Habit Name)**: หากผู้ใช้พยายามส่งค่าเป็นช่องว่างหรือกดเพิ่มโดยไม่มีการกรอกข้อความ ระบบต้องป้องกันไม่ให้เพิ่มข้อมูล และแสดงข้อความเตือนข้อผิดพลาดในพื้นที่แสดงผล `#form-error` พร้อมยังคงโฟกัสที่ช่องสำหรับกรอกข้อมูล
+- **ข้อความชื่อนิสัยยาวมาก (Extremely Long Habit Names)**: หากชื่อนิสัยยาวเกินปกติ (เช่น เกิน 100 ตัวอักษร) ตัวข้อความในคอลัมน์แรกต้องมีลักษณะบีบย่อหรือปัดลงบรรทัดใหม่ ไม่ทำให้ความกว้างของคอลัมน์วันอื่นๆ ผิดรูป และไม่ดันเนื้อหาตารางให้ล้นทะลักออกจากขอบขวาของพื้นที่ตาราง
+- **กรณีไม่มีข้อมูลนิสัยเลย (Empty State)**: หากหน้าเว็บเปิดขึ้นมาเป็นครั้งแรกและยังไม่มีนิสัยถูกเพิ่มในระบบเลย ตารางและตัวกรองทั้งหมดจะต้องถูกซ่อนไว้ และแสดงผลกล่องต้อนรับผู้ใช้งาน `#empty-state` ซึ่งมีข้อความระบุว่า "ยังไม่มีนิสัยที่ติดตาม เริ่มสร้างนิสัยดี ๆ อันแรกของคุณได้เลย!"
+- **การแสดงผลบนหน้าจอมือถือ (Responsive Layout)**: ตารางติดตามนิสัยประจำสัปดาห์จะต้องมีขนาดพอเหมาะกับการแสดงผลบนอุปกรณ์ขนาดเล็ก หากเนื้อหาตารางกว้างเกินขนาดจอ ตู้เก็บคอนเทนเนอร์ของตารางจะต้องเปิดการทำงานของแถบเลื่อนแนวนอนแบบไหลลื่น (`overflow-x: auto`) และยังมีขนาดเซลล์ที่กว้างพอสำหรับใช้นิ้วมือกดเลือกช่องแต่ละวันได้อย่างสะดวกสบาย
+- **การเน้นวันปัจจุบัน (Today Column Highlight)**: คอลัมน์ที่ตรงกับวันปัจจุบันในสัปดาห์นั้น (คำนวณจากเวลาของเครื่องผู้ใช้งาน) จะต้องมีลักษณะการเน้นพิเศษผ่าน CSS (เช่น คลาส `today-highlight`) เพื่อแสดงให้ผู้ใช้งานเห็นได้ทันทีว่าคอลัมน์ไหนคือวันปัจจุบัน
 
-- **SC-001**: Users can add a new habit and see it rendered in the weekly table in less than 2 seconds from clicking the add button or pressing Enter.
-- **SC-002**: Data persistence is 100% reliable; reloading or reopening the browser restores the exact list of habits and completion checkmarks with zero data loss.
-- **SC-003**: All interface interactions—toggling completions, updating filters, and updating summaries—must occur instantaneously (visual feedback in under 100ms) with no page reloads.
-- **SC-004**: Resetting the week clears 100% of completion status checkboxes back to 0/7 across all habits within 2 clicks (clicking Reset, confirming the dialog), with 100% of habit names correctly preserved.
+## ข้อกำหนดต่างๆ (Requirements) *(บังคับ)*
 
-## Assumptions
+### ข้อกำหนดด้านฟังก์ชันการทำงาน (Functional Requirements)
 
-- **Client Environment**: The user runs the application in a modern standard web browser that supports HTML5 LocalStorage, standard CSS Flexbox/Grid, and ES6+ JavaScript.
-- **System Date Integration**: The "Today Column Highlight" relies on the client computer's local clock. If the user changes timezone or date on their device, the highlighted column will shift accordingly.
-- **Language**: The user interface, including days of the week ("จันทร์", "อังคาร", etc.) and status messages, will be in Thai to align with the provided team-4 specification.
-- **Constitution Compliance**: The implementation adheres to the flat root-level workspace layout (files `index.html`, `style.css`, `app.js` modified at the repository root), with zero external frameworks or backend calls.
+- **FR-001**: ระบบต้องให้ผู้ใช้สามารถเพิ่มนิสัยใหม่ได้ผ่านทางกล่องกรอกข้อความ และรองรับการบันทึกด้วยการคลิกปุ่มบันทึกหรือกดปุ่ม `Enter`
+- **FR-002**: ระบบต้องตัดช่องว่างหน้าหลัง (trim) ของข้อมูลที่กรอกเข้ามา และปฏิเสธการบันทึกข้อความที่ว่างเปล่า พร้อมแสดงข้อความผิดพลาดที่กล่อง `#form-error`
+- **FR-003**: ระบบต้องแสดงตารางเป็น HTML Table ที่รองรับ Responsive โดยแถวแสดงเป็นนิสัยแต่ละรายการ และคอลัมน์เป็นชื่อนิสัย, วันจันทร์ถึงอาทิตย์, จำนวนวันที่ทำสำเร็จของแต่ละรายการ (เช่น "X/7 วัน") และปุ่มควบคุมการจัดการ (แก้ไข, ลบ)
+- **FR-004**: ระบบต้องรองรับการคลิกที่เซลล์ของแต่ละวัน (จันทร์ ถึง อาทิตย์) เพื่อสลับสถานะไปมาระหว่าง "ทำแล้ว" (Completed) และ "ยังไม่ได้ทำ" (Incomplete)
+- **FR-005**: ระบบต้องจัดแสดงเซลล์วันที่มีสถานะ "ทำแล้ว" ด้วยสีพื้นหลังที่สังเกตได้ชัดเจน และ/หรือสัญลักษณ์เครื่องหมายถูก เพื่อให้แตกต่างอย่างชัดเจนจากวันอื่นที่ยังไม่ได้ทำ
+- **FR-006**: ระบบต้องคำนวณและแสดงผลตัวเลขรวมความสำเร็จรายแถวสำหรับนิสัยแต่ละตัว (เช่น "3/7 วัน")
+- **FR-007**: ระบบต้องมีพื้นที่ควบคุมสำหรับการกรองโดยมีตัวเลือก "ทั้งหมด" (All) และ "เฉพาะที่ยังทำไม่ครบ" (Incomplete) ซึ่งเมื่อเลือกที่ยังทำไม่ครบ จะต้องแสดงเฉพาะนิสัยที่มีจำนวนวันทำสำเร็จต่ำกว่า 7 วันเท่านั้น
+- **FR-008**: ระบบต้องแสดงตัวเลขและเปอร์เซ็นต์สรุปผลลัพธ์ภาพรวมของสัปดาห์นั้นๆ ที่ `#summary-text` ในรูปแบบ: "สัปดาห์นี้ทำสำเร็จแล้ว X จาก Y ครั้ง (Z%)" โดยคำนวณจากจำนวนช่องติ๊กที่ทำสำเร็จจริง หารด้วยโอกาสติ๊กทำสำเร็จสูงสุด (จำนวนนิสัยที่มีคูณด้วย 7 วัน)
+- **FR-009**: ระบบต้องให้ผู้ใช้งานสามารถทำการแก้ไขชื่อนิสัยที่มีอยู่เดิมได้ โดยจัดทำเป็นหน้าต่างแจ้งเตือนหรือการแก้ไขในแถวตาราง และอัปเดตข้อมูลทันทีเมื่อยืนยัน
+- **FR-010**: ระบบต้องรองรับการลบนิสัยรายแถวได้ โดยจะต้องแสดงหน้าต่างยืนยันตรวจสอบความประสงค์ (browser confirmation dialog) ก่อนที่จะดำเนินการลบข้อมูลจริงเสมอ
+- **FR-011**: ระบบต้องมีปุ่ม "รีเซ็ตสัปดาห์ใหม่" (Reset New Week) ซึ่งสามารถล้างค่าการทำสำเร็จทั้งหมดของทุกนิสัยให้กลับไปเป็น "ยังไม่ได้ทำ" (0/7 วัน) โดยที่จะไม่ส่งผลกระทบใดๆ ต่อชื่อและจำนวนของนิสัยเดิมที่ระบบมีอยู่ และต้องถามยืนยันก่อนทำงาน
+- **FR-012**: ระบบต้องบันทึกรายชื่อนิสัยพร้อมด้วยสถานะความสำเร็จในแต่ละวันลงใน `localStorage` ของเบราว์เซอร์ เพื่อให้สถิติยังคงทำงานปกติและไม่สูญหายเมื่อหน้าเว็บถูกปิดหรือรีเฟรชใหม่
+- **FR-013**: ระบบต้องอ่านค่าของวันปัจจุบันจากเวลาเครื่องของผู้ใช้งาน และนำลักษณะสไตล์ของ CSS ไปแปะครอบที่คอลัมน์ของวันปัจจุบัน (ทั้งหัวตารางและรายละเอียดรายแถว) เพื่อทำให้เห็นเด่นชัดขึ้น
+- **FR-014**: ระบบจะต้องปฏิบัติตามมาตรฐานโครงสร้างแบบ Flat Root-level ที่กำหนดในรัฐธรรมนูญ (Constitution) โดยจะพัฒนาแก้ไขเฉพาะหน้าไฟล์ `index.html`, `style.css` และ `app.js` ที่โฟลเดอร์ชั้นนอกสุด (Repository Root) เท่านั้น
+
+### เอนทิตีหลัก (Key Entities) *(รวมเฉพาะในกรณีที่มีข้อมูลเข้ามาเกี่ยวข้อง)*
+
+- **นิสัย (Habit)**: แสดงข้อมูลของนิสัยที่ผู้ใช้งานกำลังบันทึกติดตามในระบบ
+  - `id`: ตัวเลขหรือรหัสเฉพาะ (เช่น การดึงเวลาระดับมิลลิวินาทีของเครื่องขณะนั้นมาเป็น ID)
+  - `name`: ชื่อข้อความของนิสัย (ข้อความที่ถูกตัดช่องว่างแล้วและห้ามว่างเปล่า)
+  - `completions`: อาร์เรย์ของค่าความจริง 7 ลำดับเพื่อบอกสถานะวันจันทร์ถึงวันอาทิตย์ (ดัชนี 0 = วันจันทร์, ดัชนี 6 = วันอาทิตย์)
+
+## เกณฑ์ความสำเร็จ (Success Criteria) *(บังคับ)*
+
+### ผลลัพธ์ที่วัดผลได้ (Measurable Outcomes)
+
+- **SC-001**: ผู้ใช้เพิ่มนิสัยใหม่และสามารถมองเห็นรายการแสดงขึ้นมาบนตารางรายสัปดาห์ได้ในเวลาน้อยกว่า 2 วินาทีหลังจากคลิกส่งข้อมูลหรือกด Enter
+- **SC-002**: ระบบทำงานกับ LocalStorage ได้อย่างมีเสถียรภาพ 100% การรีเฟรชหน้าเว็บหรือการปิดแท็บเปิดใหม่จะสามารถโหลดรายการความก้าวหน้าและเครื่องหมายถูกกลับคืนมาได้อย่างแม่นยำ ไม่สูญหาย
+- **SC-003**: ทุกขั้นตอนการโต้ตอบของผู้ใช้งาน (การคลิกเลือกช่องวัน, การเปลี่ยนตัวกรอง, สถิติภาพรวมอัปเดต) จะต้องให้ผลตอบรับทางภาพกลับคืนสู่สายตาอย่างฉับพลันในเวลาไม่เกิน 100 มิลลิวินาที โดยไม่มีการรีโหลดหน้าเว็บใหม่
+- **SC-004**: การสั่งเริ่มรีเซ็ตรอบสัปดาห์จะต้องสามารถทำงานทำความสะอาดเซลล์ได้เกลี้ยงเกลา 100% เป็น 0/7 วัน ในช่วงคลิกไม่เกิน 2 ครั้ง (กดยืนยันจากกล่องถามความมั่นใจ) และคงชื่อของรายการนิสัยทั้งหมดไว้คงเดิม 100%
+
+## สมมติฐาน (Assumptions)
+
+- **สภาพแวดล้อมของผู้ใช้งาน**: ผู้ใช้งานทำงานผ่านเบราว์เซอร์สมัยใหม่มาตรฐานทั่วไปที่มีความสามารถรองรับการเรียกใช้งาน HTML5 LocalStorage, standard CSS Flexbox/Grid และฟังก์ชันการเขียน JavaScript แบบมาตรฐานตั้งแต่เวอร์ชัน ES6 ขึ้นไป
+- **การซิงค์เวลาของเครื่อง**: ระบบสไตล์ "เน้นวันปัจจุบัน" (Today Column Highlight) จะทำงานตามสเกลเวลาของเครื่องคอมพิวเตอร์ผู้ใช้ หากเครื่องมีเวลาคลาดเคลื่อน คอลัมน์ที่ส่องแสงเน้นสว่างก็จะคลาดเคลื่อนตามไป
+- **ภาษา**: ข้อความส่วนติดต่อสื่อสารกับผู้ใช้งาน (UI) วันประจำสัปดาห์ต่างๆ ("จันทร์", "อังคาร", เป็นต้น) และข้อความสรุปเปอร์เซ็นต์ความคืบหน้าจะใช้รูปแบบภาษาไทยทั้งหมดตามความต้องการของเอกสารต้นขั้วสำหรับทีม 4
+- **การปฏิบัติตามกฎบัตรรัฐธรรมนูญ**: กระบวนการสร้างและเขียนจะรักษารูปแบบสถาปัตยกรรมแบบไม่มีเซิร์ฟเวอร์แบ็คเอนด์ ไม่มีเฟรมเวิร์ก ทำงานจบภายในไฟล์ Root ที่ชั้นนอกสุดทั้งหมดของโครงสร้างโฟลเดอร์โปรเจกต์
