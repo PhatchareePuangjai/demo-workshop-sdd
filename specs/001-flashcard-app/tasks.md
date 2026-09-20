@@ -55,10 +55,10 @@
 
 **Goal**: Track mastery status, show progress, and bulk-clear memorized cards.
 
-- [ ] T018 [US3] Implement mastery toggle logic (`toggleItem`) in `app.js`
-- [ ] T019 [US3] Implement real-time progress summary rendering in `render()`
-- [ ] T020 [US3] Implement bulk-delete logic for memorized cards in `app.js`
-- [ ] T021 [US3] Add visual styles for "Memorized" cards in `style.css`
+- [x] T018 [US3] Implement mastery toggle logic (`toggleItem`) in `app.js`
+- [x] T019 [US3] Implement real-time progress summary rendering in `render()`
+- [x] T020 [US3] Implement bulk-delete logic for memorized cards in `app.js`
+- [x] T021 [US3] Add visual styles for "Memorized" cards in `style.css`
 
 ---
 
@@ -66,6 +66,6 @@
 
 **Purpose**: Improvements and final validation
 
-- [ ] T022 Implement empty state messaging (`empty-state` in `index.html` + `render()` logic)
-- [ ] T023 Apply responsive layout optimizations in `style.css`
+- [x] T022 Implement empty state messaging (`empty-state` in `index.html` + `render()` logic)
+- [x] T023 Apply responsive layout optimizations in `style.css`
 - [ ] T024 Perform end-to-end verification using `quickstart.md`

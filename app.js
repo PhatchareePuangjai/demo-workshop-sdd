@@ -89,7 +89,13 @@ function saveCard(vocab, translation) {
 function render() {
   saveState();
   
-  // 1. Render List
+  // 1. Render Summary
+  const memorizedCount = state.items.filter(i => i.isMemorized).length;
+  summaryText.textContent = state.items.length > 0 
+    ? `จำได้แล้ว ${memorizedCount} จาก ${state.items.length} คำ` 
+    : 'ยังไม่มีคำศัพท์';
+
+  // 2. Render List
   itemList.innerHTML = '';
   state.items.forEach(card => {
     const li = document.createElement('li');
@@ -106,7 +112,7 @@ function render() {
   });
   emptyState.hidden = state.items.length > 0;
 
-  // 2. Render Carousel
+  // 3. Render Carousel
   renderCarousel();
 }
 
@@ -134,13 +140,47 @@ function renderCarousel() {
   `;
 }
 
-// Event Listeners
+// Event Listeners (Added filtering and navigation)
 form.addEventListener('submit', (e) => {
   e.preventDefault();
   if (saveCard(inputVocab.value, inputTranslation.value)) {
     inputVocab.value = '';
     inputTranslation.value = '';
     showError('');
+  }
+});
+
+document.querySelector('#filter-section').addEventListener('click', (e) => {
+  if (e.target.classList.contains('btn-filter')) {
+    state.filter = e.target.dataset.filter;
+    state.currentReviewIndex = 0; // Reset index on filter change
+    document.querySelectorAll('.btn-filter').forEach(btn => btn.classList.remove('is-active'));
+    e.target.classList.add('is-active');
+    render();
+  }
+});
+
+btnPrev.addEventListener('click', () => {
+  const filtered = state.items.filter(item => {
+    if (state.filter === 'memorized') return item.isMemorized;
+    if (state.filter === 'not_memorized') return !item.isMemorized;
+    return true;
+  });
+  if (filtered.length > 0) {
+    state.currentReviewIndex = (state.currentReviewIndex - 1 + filtered.length) % filtered.length;
+    render();
+  }
+});
+
+btnNext.addEventListener('click', () => {
+  const filtered = state.items.filter(item => {
+    if (state.filter === 'memorized') return item.isMemorized;
+    if (state.filter === 'not_memorized') return !item.isMemorized;
+    return true;
+  });
+  if (filtered.length > 0) {
+    state.currentReviewIndex = (state.currentReviewIndex + 1) % filtered.length;
+    render();
   }
 });
 
@@ -168,7 +208,8 @@ window.toggleMemorized = (id) => {
   }
 };
 
-// Initialize
-btnClear.addEventListener('click', bulkDeleteMemorized);
-loadState();
-render();
+btnClear.addEventListener('click', () => {
+  state.items = state.items.filter(i => !i.isMemorized);
+  state.currentReviewIndex = 0;
+  render();
+});
