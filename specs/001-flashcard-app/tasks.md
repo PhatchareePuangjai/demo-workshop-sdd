@@ -31,11 +31,11 @@
 
 **Goal**: Enable users to create, view, edit, and delete vocabulary cards.
 
-- [ ] T008 [US1] Implement card creation logic (`addItem`) in `app.js`
-- [ ] T009 [US1] Connect form submission to `addItem` and update `render()`
-- [ ] T010 [US1] Implement card list rendering logic in `render()`
-- [ ] T011 [US1] Implement card editing logic (populate form from existing card)
-- [ ] T012 [US1] Implement card deletion logic (`deleteItem`) in `app.js`
+- [x] T008 [US1] Implement card creation logic (`addItem`) in `app.js`
+- [x] T009 [US1] Connect form submission to `addItem` and update `render()`
+- [x] T010 [US1] Implement card list rendering logic in `render()`
+- [x] T011 [US1] Implement card editing logic (populate form from existing card)
+- [x] T012 [US1] Implement card deletion logic (`deleteItem`) in `app.js`
 
 ---
 
@@ -43,11 +43,11 @@
 
 **Goal**: Provide interactive review mode with flip animation and filtering.
 
-- [ ] T013 [US2] Implement CSS 3D flip animation in `style.css`
-- [ ] T014 [US2] Implement review carousel rendering logic in `render()`
-- [ ] T015 [US2] Implement navigation controls ("ถัดไป", "ก่อนหน้า") with wrapping logic
-- [ ] T016 [US2] Implement filter logic (`getVisibleItems`) based on `state.filter`
-- [ ] T017 [US2] Connect filter buttons to state and update `render()`
+- [x] T013 [US2] Implement CSS 3D flip animation in `style.css`
+- [x] T014 [US2] Implement review carousel rendering logic in `render()`
+- [x] T015 [US2] Implement navigation controls ("ถัดไป", "ก่อนหน้า") with wrapping logic
+- [x] T016 [US2] Implement filter logic (`getVisibleItems`) based on `state.filter`
+- [x] T017 [US2] Connect filter buttons to state and update `render()`
 
 ---
 
