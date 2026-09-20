@@ -10,7 +10,7 @@
 
 A single-page income/expense tracker: add entries (name, amount, type, category), see them newest-first in green/red with a live 3-value summary (income, expense, balance), filter by type, edit name/amount inline, delete with confirmation, clear all, and keep everything across refreshes.
 
-Technical approach: edit the base template's root `index.html`, `style.css` and `app.js` in place. A single `state` object (`items`, `filter`, transient `editing`) is the source of truth and `render()` is the only function that draws data. Amounts are stored as integer satang so totals always match the displayed lines. Only `items` is persisted to `localStorage`, with defensive loading so bad stored data yields the empty state. Decisions and alternatives are in [research.md](./research.md).
+Technical approach: edit the base template's root `index.html`, `style.css` and `app.js` in place. A single `state` object (`items`, `filter`, transient `editing`) is the source of truth and `render()` is the only function that draws data. Amounts are stored as integer satang so totals always match the displayed lines. Only `items` is persisted to `localStorage`, with defensive loading so bad stored data yields the empty state. Decisions and alternatives are in [research.md](./research.md). The look follows the team's reference image (warm cream/peach, orange, pastel tiles, rounded shapes) using CSS only — see research R14.
 
 ## Technical Context
 
@@ -30,7 +30,7 @@ Technical approach: edit the base template's root `index.html`, `style.css` and 
 
 **Constraints**: No frameworks, no build step, no network calls, no authentication; flat root-level files; must fit the 75-minute build session
 
-**Scale/Scope**: One user, one browser, tens to low hundreds of entries; 1 page, 5 user stories, 23 functional requirements
+**Scale/Scope**: One user, one browser, tens to low hundreds of entries; 1 page, 5 user stories, 26 functional requirements
 
 ## Constitution Check
 
@@ -89,8 +89,8 @@ specs/001-web-expense-tracker/
 
 | File | Keep | Change / add | Remove |
 |---|---|---|---|
-| `index.html` | Sections, base IDs, `<link>`/`<script>` paths | App title; `novalidate` form with `#input-name`, `#input-amount`, `#input-type`, `#input-category`; three summary items; filters `all/income/expense`; welcome text; "ล้างข้อมูลทั้งหมด" label | Workshop comment block, all `TODO`s, subtitle, footer, `required` on the name input |
-| `style.css` | Tokens, layout, `.card`, `.btn*`, `.input/.select`, `.form-error`, `.empty-state`, responsive block | `--color-success` → `#15803d`; `.summary-item`, `.is-negative`, `.item-income/-expense`, `.badge`, `.item-amount`, `.edit-form`; keep `overflow-wrap: anywhere` | `.item.is-done` rules, `TODO`s, header comment |
+| `index.html` | Sections, base IDs, `<link>`/`<script>` paths | App title; `theme-color` meta; `novalidate` form with `#input-name`, `#input-amount`, `#input-type`, `#input-category`; three summary items; filters `all/income/expense`; welcome text; "ล้างข้อมูลทั้งหมด" label | Workshop comment block, all `TODO`s, subtitle, footer, `required` on the name input |
+| `style.css` | Tokens, layout, `.card`, `.btn*`, `.input/.select`, `.form-error`, `.empty-state`, responsive block | new palette tokens (cream/peach, orange, mint/pink/yellow tiles — [research R14](./research.md)); `.summary-item`, `.is-negative`, `.item-income/-expense`, `.badge`, `.item-amount`, `.edit-form`; keep `overflow-wrap: anywhere` | `.item.is-done` rules, `TODO`s, header comment |
 | `app.js` | `createId`, `escapeHtml`, `showError`, delegation pattern, `loadState`/`saveState` skeleton | Storage key; item shape; `parseAmountSatang`, `formatBaht`, `validateEntry`, `getSummary`, edit functions; filter logic; two-message empty state; robust `loadState`; `saveState` writes `{ items }` only | `toggleItem`, `done`, checkbox markup, `TODO`s, header comment |
 
 ## Requirements traceability (Principle V)
@@ -109,6 +109,7 @@ specs/001-web-expense-tracker/
 | FR-020 | `overflow-wrap: anywhere` on name and amount | A8, F |
 | FR-021 | Empty-state branch when `state.items` is empty | A1, E3, E5 |
 | FR-023 | Responsive CSS | F |
+| FR-024, FR-025, FR-026 | `:root` tokens + component styles in `style.css` (CSS only; palette and contrast in [research R14](./research.md)); one `theme-color` meta in `index.html` | G |
 
 ## Complexity Tracking
 

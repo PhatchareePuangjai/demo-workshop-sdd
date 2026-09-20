@@ -62,7 +62,7 @@ Row being edited (only one at a time; replaces the normal row's content):
   <form class="edit-form" novalidate>
     <input class="input" data-field="name"   value="{escaped draft name}">
     <input class="input" data-field="amount" value="{draft amount}" type="number" step="any" inputmode="decimal">
-    <button type="submit" class="btn btn-primary" data-action="save">บันทึก</button>
+    <button type="submit" class="btn btn-primary">บันทึก</button>
     <button type="button" class="btn" data-action="cancel">ยกเลิก</button>
     <p class="form-error">{editing.error}</p>   <!-- hidden when empty -->
   </form>
@@ -77,7 +77,7 @@ All user text goes through `escapeHtml` before entering `innerHTML`.
 |---|---|---|
 | `#item-form` | `submit` | validate → `addItem` → reset form, focus name → `render()` |
 | `#item-list` | `click` on `data-action="edit\|delete\|cancel"` | dispatch to `startEdit` / `deleteItem` (after `confirm`) / `cancelEdit`, then `render()`. A declined `confirm` returns **without** calling `render()`, so text typed into an open edit row is not redrawn from the stale draft |
-| `#item-list` | `submit` on `.edit-form` | read the two fields → `saveEdit` → `render()` |
+| `#item-list` | `submit` on `.edit-form` | `preventDefault`; read the two fields → `saveEdit` → `render()`. The submit button has **no** `data-action`; the click handler above MUST `return` early for any action other than `edit`, `delete`, `cancel`, otherwise its trailing `render()` would rebuild the form before `submit` fires and lose the typed text |
 | `#filter-section` | `click` on `[data-filter]` | `state.filter = value`; `state.editing = null`; `render()` |
 | `#btn-clear` | `click` | return if no items; `confirm`; `state.items = []`; `render()` |
 

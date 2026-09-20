@@ -87,3 +87,27 @@ Items to delete or replace because the spec does not use them: the "SDD WORKSHOP
 | **Total** | **71 min** (4 min buffer) |
 
 Fits the time box. If time runs short, cut in reverse priority order per the spec: US4 (edit) first, then US5 (delete / clear all); US1–US3 are the must-haves.
+
+## R14 — Visual identity from the reference image (FR-024..026)
+
+- **Decision**: Restyle with CSS only (tokens on `:root`), inspired by the reference image's palette and shapes — cream/peach striped page, orange primary, mint/pink/yellow pastel tiles, rounded "sticker" cards with cream borders, bold orange title with a white outline. No image files, no web fonts, no characters/logos from the reference (FR-026, Principle VII flat layout, Principle I). Decoration uses only shapes, colour and standard emoji (`::before`).
+- **Palette sampled from the reference** → **token actually used** (bright colours are kept for *fills*; text colours are darkened to pass contrast, FR-025):
+
+| Role | Reference | Token used | Why it differs |
+|---|---|---|---|
+| Page background | `#f6dfbe` / `#f5d5b5` | `--color-bg #f8dfbf`, stripe `#f4d3aa` | same family |
+| Card surface | cream `#fbf0e0` | `--color-surface #fffaf0` | lighter so text stays ≥ 12:1 |
+| Card border | `#f0ddb9` | `--color-border #f0d5aa` | same family |
+| Primary (fill) | orange `#fc7b29` | `--color-primary #fc7b29` | kept; text on it is dark brown |
+| Body text | — | `--color-text #4a2b16` | 12.25:1 on surface |
+| Muted text | brown `#a66548` | `--color-muted #80502c` | `#a66548` is < 4.5:1; darkened (6.5:1 surface, 5.25:1 page) |
+| Income | mint `#1bb58f` (2.61:1 on white — fails as text) | text `--color-success #0d6e55`, tile `#d9f5ec` | ≥ 4.8:1 everywhere |
+| Expense / negative | coral `#ff5843` (3.12:1 — fails as text) | text `--color-danger #b3260e`, tile `#ffe3de` | ≥ 5.09:1 everywhere |
+| Balance tile | yellow `#ffc800` | tile `#fff0b8`, text = body text | 11.17:1 |
+| Title | orange `#fc7b29` + white outline | fill `#dd5208`, white outline | large text ≥ 3:1: 3.97:1 vs the white outline, 3.08:1 vs page (the reference orange gives only 2.62 / 2.04) |
+| Sub-heading | teal `#1bbd9c` | `#0a7f6a` (4.74:1) | contrast |
+| Placeholder | — | `#8f6a47` on white (4.86:1) | ≥ 4.5 |
+
+- **Contrast checked** (WCAG relative luminance, script in the scratchpad; results in the table above): white text on the reference orange = 2.62:1 (fails), so primary buttons use **dark brown text on orange** (4.86:1), not white. Hover state lightens (`#ff8a3d`, 5.43:1) instead of darkening (`#f06a14` would be 4.11:1).
+- **Colour is not the only cue** (unchanged from R10): rows keep the text badge "รายรับ"/"รายจ่าย", and the summary tiles have text labels.
+- **Alternatives considered**: a web font like the reference's rounded display face (rejected — external network dependency, breaks offline/`file://`, FR-026); SVG/PNG decorations (rejected — extra files violate Principle VII; copying the reference's characters is also an IP problem); using the reference colours verbatim for text (rejected — fails FR-025).

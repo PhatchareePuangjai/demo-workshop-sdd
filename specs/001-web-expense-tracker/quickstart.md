@@ -71,6 +71,14 @@ Numbers in brackets link to spec items.
 
 Use DevTools device mode at 360 px, 768 px and desktop widths. **Expect** at each: form, summary, filters, rows and buttons are all reachable and usable, no horizontal scrollbar, large values (e.g. `1234567890.5`) do not overflow their box.
 
+### G. Visual identity (FR-024..026, SC-009, SC-010)
+
+1. Open the app next to the reference image. **Expect**: cream/peach page with soft stripes, bold orange title with a white outline, white rounded cards with cream borders, an orange "บันทึก" button and orange active filter, and three summary tiles in mint / pink / yellow.
+2. Add income and expense rows. **Expect**: green vs red amounts, each with a "รายรับ"/"รายจ่าย" badge; a negative balance is still red.
+3. **Expect**: no cartoon characters, logos, `<img>`, `url(...)`, `@import` or external fonts anywhere: `grep -nE "<img|url\(|@import|https?://" index.html style.css app.js` prints nothing.
+4. Contrast: every text/background pair is ≥ 4.5:1 (title ≥ 3:1). Verify with the palette table in [research R14](./research.md) or a DevTools contrast check on the title, body text, muted text, income/expense text, badges, primary and filter buttons, placeholders.
+5. Turn the network off and reload. **Expect**: identical appearance.
+
 ## Ready to ship when
 
 - Every **Expect** above holds and the Console shows no errors.
